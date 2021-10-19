@@ -21,7 +21,7 @@ public class DemoTimer : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyUp("p"))
+        if(Input.GetKeyDown("p"))
         {
             ClockTimer.SetPause(!ClockTimer.IsPause);
         }

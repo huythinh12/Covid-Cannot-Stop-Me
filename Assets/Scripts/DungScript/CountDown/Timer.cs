@@ -7,14 +7,14 @@ using UnityEngine.Events;
 public class Timer : MonoBehaviour
 {
     [SerializeField] private Image uiFillImage;
-
+   
     public int Duration { get; private set; }
 
     public bool IsPause { get; private set; }
 
     private int remainingDuration;
 
-    // Events --
+    // Delegates
     private UnityAction onTimerBeginAction;
     private UnityAction<int> onTimerChangeAction;
     private UnityAction onTimerEndAction;
