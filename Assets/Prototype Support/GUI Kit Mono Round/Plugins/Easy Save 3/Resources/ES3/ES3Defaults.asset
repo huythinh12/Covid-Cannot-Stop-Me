@@ -31,11 +31,12 @@ MonoBehaviour:
     assemblyNames:
     - Assembly-CSharp-firstpass
     - Assembly-CSharp
+    - Cinemachine
     - Autodesk.Fbx
     - FbxBuildTestAssets
-    - UMotionSourceApplication
     - Autodesk.Fbx.Editor
     - UMotionSourceEditor
+    - UMotionSourceApplication
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
