@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GeneralStates:
     LoadedProjectGUID:
-      valueInternal: 9a18b74770674724193c2632ef77bb8f
+      valueInternal: b1c56ac1e444a394aaf823cbc91bc093
     RecentlyOpenedProjectPath:
       valueInternal: Assets\DungStudio\TestAnimation
     RecentlyOpenedProjectGUIDsList:
+    - valueInternal: b1c56ac1e444a394aaf823cbc91bc093
+    - valueInternal: a049750e777c52d4e887b0b78ec681b6
+    - valueInternal: 3bb5c770372dc3148a21aa9671c595ff
     - valueInternal: 9a18b74770674724193c2632ef77bb8f
     - valueInternal: c4f0890c29900a0468939aeff7873dc3
