@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/DungStudio/Scene/CanvasScene/StartMenuScene.unity
+    guid: 37ecbf70d1e364e41a937af185430455
+  - enabled: 1
+    path: Assets/DungStudio/Scene/CanvasScene/InGameScene.unity
+    guid: d91871b939af0cb4da4249144fbcf2b5
   m_configObjects: {}
