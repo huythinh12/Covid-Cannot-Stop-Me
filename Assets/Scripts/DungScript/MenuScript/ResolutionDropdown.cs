@@ -20,7 +20,7 @@ namespace Menu
         {
             listResolutions = Screen.resolutions;
 
-            resolutionDropdown.ClearOptionss();
+            resolutionDropdown.ClearOptions();
 
             List<string> options = new List<string>();
 
