@@ -57,7 +57,7 @@ public class ConventionandLayoutGuidelines : MonoBehaviour
     public int a;
 
     //------------------protected scope---------------------
-    protected string name;
+    protected string nameZ;
     protected GameObject b;
    
     //------------------private scope-------------------------
