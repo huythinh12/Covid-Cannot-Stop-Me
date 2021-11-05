@@ -4,11 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-<<<<<<< Updated upstream
   - Target
-=======
-  - selectObject
->>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
@@ -16,8 +12,8 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
-  - selectObject
+  - Obstacles
+  - Targets
   - 
   - 
   - 

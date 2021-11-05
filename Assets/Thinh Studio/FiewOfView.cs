@@ -14,12 +14,10 @@ public class FiewOfView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    print( "khoảng cách giữa 2 object :" + Vector3.Distance(transform.position,anotherTarget.position));
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position,anotherTarget.position);
+       
     }
 }
