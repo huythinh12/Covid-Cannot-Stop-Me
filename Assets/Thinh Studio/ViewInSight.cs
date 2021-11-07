@@ -3,8 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using BehaviorDesigner.Runtime.Tasks;
 using BehaviorDesigner.Runtime;
-using UnityEditor.Experimental.TerrainAPI;
-using UnityEngine.Events;
 
 [TaskIcon("Assets/Behavior Designer Tutorials/Tasks/Editor/{SkinColor}CanSeeObjectIcon.png")]
 public class ViewInSight : Conditional

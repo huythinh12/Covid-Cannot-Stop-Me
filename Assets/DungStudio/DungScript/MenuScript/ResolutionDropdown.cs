@@ -10,7 +10,7 @@ namespace Menu
         [SerializeField]
         private TMPro.TMP_Dropdown resolutionDropdown;
         private Resolution[] listResolutions;
-
+        private int currentResolutionIndex = 0;
 
         private void Start()
         {
@@ -28,9 +28,25 @@ namespace Menu
             {
                 string option = listResolutions[i].width + "x" + listResolutions[i].height;
                 options.Add(option);
+                if (listResolutions[i].width == Screen.currentResolution.width &&
+                    listResolutions[i].height == Screen.currentResolution.height)
+                {
+                    currentResolutionIndex = i;
+                }
+
             }
             resolutionDropdown.AddOptions(options);
+            resolutionDropdown.value = currentResolutionIndex;
+            resolutionDropdown.RefreshShownValue();
+
         }
+        
+        public void SetResolution(int resolutionIndex)
+        {
+            Resolution resolution = listResolutions[resolutionIndex];
+            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        }
+
 
     }
 }

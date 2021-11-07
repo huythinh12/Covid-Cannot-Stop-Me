@@ -1,19 +1,20 @@
 using BehaviorDesigner.Runtime.Tasks;
 using BehaviorDesigner.Runtime;
-
 using UnityEngine;
 
 public class DrawViewInSight : Action
 {
     [UnityEngine.Tooltip("The field of view angle of the agent (in degrees)")]
     public SharedFloat fieldOfViewAngle = 90;
+
     [UnityEngine.Tooltip("The distance that the agent can see")]
-    public SharedFloat viewDistance ;
+    public SharedFloat viewDistance;
+
     public LayerMask obstacleMask = LayerMask.NameToLayer("Obstacles");
     public SharedBool isTimeChasingOut;
     public SharedColor colorLight;
     private float saveDistance;
-    
+
     public override void OnAwake()
     {
         saveDistance = viewDistance.Value;
@@ -25,7 +26,7 @@ public class DrawViewInSight : Action
     public override void OnDrawGizmos()
     {
 #if UNITY_EDITOR
-        if(isTimeChasingOut.Value)
+        if (isTimeChasingOut.Value)
             colorLight.Value = Color.white;
         ViewRange();
         var oldColor = UnityEditor.Handles.color;
@@ -44,16 +45,17 @@ public class DrawViewInSight : Action
 
     private void ViewRange()
     {
-        viewDistance.Value = saveDistance;
+        if (viewDistance.Value != null)
+            viewDistance.Value = saveDistance;
         RaycastHit hit;
-        if(Physics.Raycast(transform.position,  transform.TransformDirection(Vector3.forward),hitInfo: out hit, Mathf.Infinity))
-        {
-            if (!hit.collider.CompareTag("Target"))
+        if (transform != null)
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), hitInfo: out hit,
+                Mathf.Infinity))
             {
-                viewDistance.Value = hit.distance;
+                if (!hit.collider.CompareTag("Target"))
+                {
+                    viewDistance.Value = hit.distance;
+                }
             }
-        }
     }
-   
-    
 }

@@ -2,8 +2,6 @@ using System.Security.Authentication.ExtendedProtection;
 using UnityEngine;
 using BehaviorDesigner.Runtime.Tasks;
 using BehaviorDesigner.Runtime;
-using UnityEditor.Experimental.TerrainAPI;
-using UnityEngine.Events;
 
 [TaskIcon("Assets/Behavior Designer Tutorials/Tasks/Editor/{SkinColor}CanSeeObjectIcon.png")]
 public class WithinSight : Conditional
