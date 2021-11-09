@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityRigidbody;
+
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -20,7 +16,15 @@ namespace Player
         [SerializeField] private float groundDistance = 0.01f;
         [SerializeField] private bool IsGrounded;
 
+        public GameObject followTarget;
+        public Quaternion nextRotation;
+        public bool isAiming;
         private Rigidbody rbPlayer;
+        
+        private float rotationPower = 3f;
+        private float rotationSmoothToLerp = 0.2f;
+        private Vector3 angles;
+
         
         #region CharacterController-OldCase
         // [SerializeField] private CharacterController playerCharacterController;
@@ -31,7 +35,6 @@ namespace Player
         // Start is called before the first frame update
         void Start()
         {
-            DectectCollisions();
             rbPlayer = GetComponent<Rigidbody>();
             groundMask = LayerMask.NameToLayer("Ground");
         }
@@ -42,24 +45,43 @@ namespace Player
             PlayerMovement();
         }
 
-        private void DectectCollisions()
-        {
-            // playerCharacterController.detectCollisions = false;
-        }
-
         private void PlayerMovement()
         {
             float xAxis = Input.GetAxisRaw("Horizontal");
             float zAxis = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(xAxis, 0f, zAxis).normalized;
 
+            //rotate when aim 
+            if (isAiming)
+            {
+                float xAxisMouse = Input.GetAxisRaw("Mouse X"); // trả về giá trị[-1..1]
+                float yAxisMouse = Input.GetAxisRaw("Mouse Y") * -1f ;
+
+                //xoay followTarget(vị trí object ở cổ ) theo trục y thẳng đứng -> nhìn sang trái/phải
+                followTarget.transform.rotation *= Quaternion.AngleAxis(xAxisMouse * rotationPower, Vector3.up);
+                //xoay followTarget(vị trí object ở cổ ) theo trục x nằm ngang -> nhìn xuống/lên
+                followTarget.transform.rotation *= Quaternion.AngleAxis(yAxisMouse * rotationPower, Vector3.right);
+
+                ClampUpDownRotation();
+                
+                //rotate theo aim 
+                nextRotation = Quaternion.Lerp(followTarget.transform.rotation, nextRotation,
+                    Time.deltaTime * rotationSmoothToLerp);
+                transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
+                followTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
+
+            }
+            
+            // kiem tra neu co di chuyen             
             if (direction.magnitude >= 0.1f)
             {
                 // Charater Direction same as Camera Forward
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
                     turnSmoothTime);
+                if(!isAiming)
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
+                
                 Vector3 playerMovementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 
                 
@@ -87,6 +109,9 @@ namespace Player
 
                 #endregion    
             }
+
+           
+         
         }
 
         private void PlayerJump()
@@ -112,6 +137,24 @@ namespace Player
             // playerCharacterController.Move(velocity.normalized  * Time.deltaTime);
             #endregion
         }
-        
+        private void ClampUpDownRotation()
+        {
+            //get all angel
+            angles = followTarget.transform.localEulerAngles;
+            angles.z = 0;
+            //get angle x 
+            var angle = followTarget.transform.localEulerAngles.x;
+
+            if (angle > 180 && angle < 340)
+            {
+                angles.x = 340;
+            }
+            else if (angle < 180 && angle > 40)
+            {
+                angles.x = 40;
+            }
+
+            followTarget.transform.localEulerAngles = angles;
+        }
     }
 }
