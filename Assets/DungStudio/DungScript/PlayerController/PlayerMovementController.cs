@@ -1,11 +1,11 @@
-
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player
 {
     public class PlayerMovementController : MonoBehaviour
     {
-        
         [SerializeField] private Transform camera;
         [SerializeField] private Transform groundCheck;
         [SerializeField] private LayerMask groundMask;
@@ -13,28 +13,37 @@ namespace Player
         [SerializeField] private float jumpForece = 3f;
         [SerializeField] private float turnSmoothTime = 0.1f;
         [SerializeField] private float turnSmoothVelocity;
-        [SerializeField] private float groundDistance = 0.01f;
-        [SerializeField] private bool IsGrounded;
+        [SerializeField] private float groundDistance = 0.03f;
 
+        public GameObject characterAnimtion;
+        public bool IsGrounded;
         public GameObject followTarget;
         public Quaternion nextRotation;
         public bool isAiming;
-        private Rigidbody rbPlayer;
+        public float fallingVelocity;
+        [FormerlySerializedAs("isFallingEnoughtAnim")] public bool isFallingEnoughAnim;
         
+        private AnimationsEvent animationEvent;
+        private Rigidbody rbPlayer;
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
         private Vector3 angles;
 
-        
+
         #region CharacterController-OldCase
+
         // [SerializeField] private CharacterController playerCharacterController;
         // [SerializeField] Vector3 velocity;
         // [SerializeField] private float gravity = -9.81f;
+
         #endregion
 
         // Start is called before the first frame update
         void Start()
         {
+            animationEvent = characterAnimtion.GetComponent<AnimationsEvent>();
+
+
             rbPlayer = GetComponent<Rigidbody>();
             groundMask = LayerMask.NameToLayer("Ground");
         }
@@ -55,7 +64,7 @@ namespace Player
             if (isAiming)
             {
                 float xAxisMouse = Input.GetAxisRaw("Mouse X"); // trả về giá trị[-1..1]
-                float yAxisMouse = Input.GetAxisRaw("Mouse Y") * -1f ;
+                float yAxisMouse = Input.GetAxisRaw("Mouse Y") * -1f;
 
                 //xoay followTarget(vị trí object ở cổ ) theo trục y thẳng đứng -> nhìn sang trái/phải
                 followTarget.transform.rotation *= Quaternion.AngleAxis(xAxisMouse * rotationPower, Vector3.up);
@@ -63,15 +72,14 @@ namespace Player
                 followTarget.transform.rotation *= Quaternion.AngleAxis(yAxisMouse * rotationPower, Vector3.right);
 
                 ClampUpDownRotation();
-                
+
                 //rotate theo aim 
                 nextRotation = Quaternion.Lerp(followTarget.transform.rotation, nextRotation,
                     Time.deltaTime * rotationSmoothToLerp);
                 transform.rotation = Quaternion.Euler(0, followTarget.transform.rotation.eulerAngles.y, 0);
                 followTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
-
             }
-            
+
             // kiem tra neu co di chuyen             
             if (direction.magnitude >= 0.1f)
             {
@@ -79,12 +87,11 @@ namespace Player
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + camera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity,
                     turnSmoothTime);
-                if(!isAiming)
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-                
+                if (!isAiming)
+                    transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
                 Vector3 playerMovementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                
-                
+
                 transform.position += playerMovementDirection * speed * Time.deltaTime;
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
@@ -93,6 +100,7 @@ namespace Player
                 }
 
                 #region CharacterController-OldCase
+
                 //Cách cũ sử dụng Character Controller
                 // PlayerMovement on condition input
                 // if (Input.GetKey(KeyCode.LeftShift))
@@ -107,22 +115,28 @@ namespace Player
                 //     playerCharacterController.Move(playerMovementDirection.normalized * speed * Time.deltaTime);
                 // }
 
-                #endregion    
+                #endregion
             }
-
-           
-         
         }
 
         private void PlayerJump()
         {
+            RaycastHit hit;
             IsGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~groundMask);
-            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded)
+         
+            if (IsGrounded && animationEvent.isJumpReady)
             {
-                rbPlayer.AddForce(Vector3.up * jumpForece ,ForceMode.Impulse);
+                rbPlayer.AddForce(Vector3.up * jumpForece, ForceMode.Impulse);
+            }
+            else
+            {
+                animationEvent.isJumpReady = false;
             }
 
+            fallingVelocity = rbPlayer.velocity.normalized.y;
+
             #region CharacterController-OldCase
+
             // Cách cũ sử dụng Character Controller
             // if (IsGrounded && velocity.y < 0)
             // {
@@ -135,8 +149,10 @@ namespace Player
             // velocity.y += gravity * Time.deltaTime;
             //
             // playerCharacterController.Move(velocity.normalized  * Time.deltaTime);
+
             #endregion
         }
+
         private void ClampUpDownRotation()
         {
             //get all angel

@@ -34,13 +34,13 @@ namespace Player
         public void AnimatorHash()
         {
             playerAnimator = GetComponent<Animator>();
-            isIdleingHash = Animator.StringToHash("IsIdle");
-            isWalkingHash = Animator.StringToHash("IsWalk");
-            isRunningHash = Animator.StringToHash("IsRun");
-            isJumpingHash = Animator.StringToHash("IsJump");
-            isDrinkingHash = Animator.StringToHash("IsDrink");
-            isThrowingHash = Animator.StringToHash("IsThrow");
-            isHurtingHash = Animator.StringToHash("IsHurt");
+            isIdleingHash = Animator.StringToHash("isIdle");
+            isWalkingHash = Animator.StringToHash("isWalk");
+            isRunningHash = Animator.StringToHash("isRun");
+            isJumpingHash = Animator.StringToHash("isJump");
+            isDrinkingHash = Animator.StringToHash("isDrink");
+            isThrowingHash = Animator.StringToHash("isThrow");
+            isHurtingHash = Animator.StringToHash("isHurt");
 
 
         }
