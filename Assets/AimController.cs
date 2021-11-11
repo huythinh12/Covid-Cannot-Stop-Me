@@ -3,48 +3,51 @@ using System.Collections;
 using Player;
 using UnityEngine;
 
-public class AimController : MonoBehaviour
+namespace Player
 {
-    public GameObject camThird, camAim;
-    public GameObject aimRecticle;
-    private PlayerMovementController playerMovementController;
-    private void Start()
+    public class AimController : MonoBehaviour
     {
-        playerMovementController = GetComponent<PlayerMovementController>();
-    }
+        public GameObject camThird, camAim;
+        public GameObject aimRecticle;
+        private PlayerMovementController playerMovementController;
+        private void Start()
+        {
+            playerMovementController = GetComponent<PlayerMovementController>();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (camAim.activeInHierarchy)
+        // Update is called once per frame
+        void Update()
         {
-            playerMovementController.isAiming = true;
-            aimRecticle.SetActive(true);
-        }
-        else
-        {
-            playerMovementController.isAiming = false;
-            aimRecticle.SetActive(false);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (!camThird.activeInHierarchy)
+            if (camAim.activeInHierarchy)
             {
-               
-                camThird.SetActive(!camThird.activeInHierarchy);
-                StartCoroutine(DelayToActive(3));
+                playerMovementController.isAiming = true;
+                aimRecticle.SetActive(true);
             }
             else
             {
-                camAim.SetActive(!camAim.activeInHierarchy);
-                StartCoroutine(DelayToActive(3));
+                playerMovementController.isAiming = false;
+                aimRecticle.SetActive(false);
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (!camThird.activeInHierarchy)
+                {
+               
+                    camThird.SetActive(!camThird.activeInHierarchy);
+                    StartCoroutine(DelayToActive(3));
+                }
+                else
+                {
+                    camAim.SetActive(!camAim.activeInHierarchy);
+                    StartCoroutine(DelayToActive(3));
+                }
             }
         }
-    }
 
-    IEnumerator DelayToActive(float second)
-    {
-        yield return new WaitForSeconds(second);
-        camAim.transform.GetChild(1).gameObject.SetActive(camAim.activeInHierarchy);
+        IEnumerator DelayToActive(float second)
+        {
+            yield return new WaitForSeconds(second);
+            camAim.transform.GetChild(1).gameObject.SetActive(camAim.activeInHierarchy);
+        }
     }
 }
