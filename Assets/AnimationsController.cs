@@ -17,6 +17,7 @@ namespace Player
         private int isHurting;
         private int jump;
         private int death;
+        private int drink;
         private int attack;
         private int isFallEnough;
         private PlayerMovementController playerMovementController;
@@ -37,6 +38,7 @@ namespace Player
             isHurting = Animator.StringToHash("isHurt");
             jump = Animator.StringToHash("jump");
             death = Animator.StringToHash("death");
+            drink = Animator.StringToHash("drink");
             attack = Animator.StringToHash("attack");
             isFallEnough = Animator.StringToHash("isFallEnough");
         }
@@ -97,6 +99,7 @@ namespace Player
 
             if (Input.GetKeyDown(KeyCode.C))
             {
+                anim.SetTrigger(drink);
             }
         }
     }
