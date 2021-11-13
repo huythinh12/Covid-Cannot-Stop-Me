@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class AnimationsEvent : MonoBehaviour
 {
-    public static bool isJumpReady;
-    public static bool isJumpBegin;
-    public static bool isThrowEnd;
-    [HideInInspector] public bool isFallEnough;
-    public void TriggerJump()
-    {
-        isJumpReady = true;
-    }
-
-    public void TriggerJumpBegin()
-    {
-        isJumpBegin = true;
-    }
+    // public static bool isJumpPlaying;
+    // public static bool isJumpBegin;
+    // public static bool isThrowEnd;
+    public static bool isFallEnough;
+    // public void TriggerJump()
+    // {
+    //     isJumpPlaying = true;
+    // }
+    //
+    // public void TriggerJumpBegin()
+    // {
+    //     isJumpBegin = true;
+    // }
     public void TriggerFalling()
     {
-        isFallEnough = false;
+        isFallEnough = true;
     }
 
-    public void TriggerThrowEnd()
-    {
-        isThrowEnd = true;
-    }
+    // public void TriggerThrowEnd()
+    // {
+    //     isThrowEnd = true;
+    // }
 }
