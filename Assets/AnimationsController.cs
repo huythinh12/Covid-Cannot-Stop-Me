@@ -20,13 +20,10 @@ namespace Player
         private int drink;
         private int attack;
         private int isFallEnough;
-        private PlayerMovementController playerMovementController;
 
         // Start is called before the first frame update
         void Start()
         {
-            playerMovementController = GetComponent<PlayerMovementController>();
-
             var characterObject = transform.GetChild(0);
             anim = characterObject.GetComponent<Animator>();
             isIdleing = Animator.StringToHash("isIdle");
@@ -55,10 +52,10 @@ namespace Player
             float zAxis = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(xAxis, 0f, zAxis).normalized;
 
-            if (direction.magnitude >= 0.1f)
+            if (direction.magnitude >= 0.1f )
             {
                 anim.SetBool(isIdleing, false);
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) && !PlayerMovementController.isAiming)
                 {
                     anim.SetBool(isRunning, true);
                     anim.SetBool(isWalking, false);
@@ -76,23 +73,25 @@ namespace Player
                 anim.SetBool(isRunning, false);
             }
 
-            if (playerMovementController.IsGrounded)
+            if (PlayerMovementController.onGrounded)
             {
-                anim.SetBool(isJumping,false);
+                AnimationsEvent.isJumpBegin = false;
+                
+                // anim.SetBool(isJumping,false);
                 anim.SetBool(isFallEnough,true);
                 
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    anim.SetTrigger(jump);
-                }
+                // if (Input.GetKeyDown(KeyCode.Space) && !PlayerMovementController.isAiming)
+                // {
+                //     anim.SetTrigger(jump);
+                // }
             }
             else
             {
                 anim.SetBool(isFallEnough,false);
-                anim.SetBool(isJumping,true);
+                // anim.SetBool(isJumping,true);
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && PlayerMovementController.isAiming)
             {
                 anim.SetTrigger(attack);
             }

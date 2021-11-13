@@ -9,23 +9,19 @@ namespace Player
     {
         public GameObject camThird, camAim;
         public GameObject aimRecticle;
-        private PlayerMovementController playerMovementController;
-        private void Start()
-        {
-            playerMovementController = GetComponent<PlayerMovementController>();
-        }
 
+        
         // Update is called once per frame
         void Update()
         {
             if (camAim.activeInHierarchy)
             {
-                playerMovementController.isAiming = true;
+                PlayerMovementController.isAiming = true;
                 aimRecticle.SetActive(true);
             }
             else
             {
-                playerMovementController.isAiming = false;
+                PlayerMovementController.isAiming = false;
                 aimRecticle.SetActive(false);
             }
             if (Input.GetMouseButtonDown(1))

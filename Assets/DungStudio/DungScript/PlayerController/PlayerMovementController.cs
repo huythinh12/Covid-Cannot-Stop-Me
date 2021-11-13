@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,22 +14,24 @@ namespace Player
         [SerializeField] private float jumpForece = 3f;
         [SerializeField] private float turnSmoothTime = 0.1f;
         [SerializeField] private float turnSmoothVelocity;
-        [SerializeField] private float groundDistance = 0.03f;
+        [SerializeField] private float groundDistance;
 
         public GameObject characterAnimtion;
-        public bool IsGrounded;
+        public static bool onGrounded;
         public GameObject followTarget;
         public Quaternion nextRotation;
-        public bool isAiming;
+        public static bool isAiming;
         public float fallingVelocity;
-        [FormerlySerializedAs("isFallingEnoughtAnim")] public bool isFallingEnoughAnim;
-        
+
+        [FormerlySerializedAs("isFallingEnoughtAnim")]
+        public bool isFallingEnoughAnim;
+
         private AnimationsEvent animationEvent;
         private Rigidbody rbPlayer;
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
         private Vector3 angles;
-
+        public bool isInputJump;
 
         #region CharacterController-OldCase
 
@@ -42,19 +45,22 @@ namespace Player
         void Start()
         {
             animationEvent = characterAnimtion.GetComponent<AnimationsEvent>();
-
-
             rbPlayer = GetComponent<Rigidbody>();
             groundMask = LayerMask.NameToLayer("Ground");
         }
 
         private void FixedUpdate()
         {
-            PlayerJump();
-            PlayerMovement();
+            if (IsGround())
+                Movement();
         }
 
-        private void PlayerMovement()
+        private bool IsGround()
+        {
+            return onGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~groundMask);
+        }
+
+        private bool Movement()
         {
             float xAxis = Input.GetAxisRaw("Horizontal");
             float zAxis = Input.GetAxisRaw("Vertical");
@@ -93,11 +99,13 @@ namespace Player
                 Vector3 playerMovementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
                 transform.position += playerMovementDirection * speed * Time.deltaTime;
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) && !isAiming)
                 {
                     float speedUp = speed * 2;
                     transform.position += playerMovementDirection * speedUp * Time.deltaTime;
                 }
+
+                return true;
 
                 #region CharacterController-OldCase
 
@@ -117,20 +125,42 @@ namespace Player
 
                 #endregion
             }
+            else
+            {
+                return false;
+            }
         }
 
-        private void PlayerJump()
+        IEnumerator JumpStanding()
         {
-            RaycastHit hit;
-            IsGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~groundMask);
-         
-            if (IsGrounded && animationEvent.isJumpReady)
+            if (AnimationsEvent.isJumpReady)
+            {
+                rbPlayer.AddForce(Vector3.up * jumpForece, ForceMode.Impulse);
+                yield return new WaitForSeconds(0.5f);
+                while (true)
+                {
+                    if (onGrounded)
+                    {
+                        AnimationsEvent.isJumpReady = false;
+                        break;
+                    }
+
+                    yield return null;
+                }
+            }
+
+            StopAllCoroutines();
+        }
+
+        private void JumpStandingBegin()
+        {
+            if (onGrounded && AnimationsEvent.isJumpReady)
             {
                 rbPlayer.AddForce(Vector3.up * jumpForece, ForceMode.Impulse);
             }
             else
             {
-                animationEvent.isJumpReady = false;
+                AnimationsEvent.isJumpReady = false;
             }
 
             fallingVelocity = rbPlayer.velocity.normalized.y;
