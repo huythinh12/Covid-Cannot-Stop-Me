@@ -26,4 +26,11 @@ public class AnimationsEvent : MonoBehaviour
     // {
     //     isThrowEnd = true;
     // }
+    
+    public void ThrowBall()
+    {
+        var ballScript = FindObjectOfType<Bullet>();
+        ballScript.ReleaseMe();
+           
+    }
 }

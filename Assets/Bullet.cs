@@ -1,19 +1,24 @@
+using System;
 using Player;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     public int throwForce;
-    [SerializeField] private GameObject throwPoint;
+
+    // [SerializeField] private GameObject throwPoint;
     private Vector3 aimDir;
-    private Collider collider;
     private Rigidbody rbBall;
-    
+    private GameObject throwPoint;
+
     void Start()
     {
-        collider = GetComponent<Collider>();
+        throwPoint = GameObject.FindGameObjectWithTag("ThrowPoint");
+
         rbBall = GetComponent<Rigidbody>();
         transform.parent = throwPoint.transform;
+        transform.position = throwPoint.transform.position;
+        
     }
 
     public void ReleaseMe()
@@ -22,5 +27,10 @@ public class Bullet : MonoBehaviour
         rbBall.useGravity = true;
         transform.rotation = throwPoint.transform.rotation;
         rbBall.AddForce(AimController.aimDir * throwForce, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Destroy(gameObject);
     }
 }
