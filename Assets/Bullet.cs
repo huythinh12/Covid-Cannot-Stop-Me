@@ -14,7 +14,6 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         throwPoint = GameObject.FindGameObjectWithTag("ThrowPoint");
-
         rbBall = GetComponent<Rigidbody>();
         transform.parent = throwPoint.transform;
         transform.position = throwPoint.transform.position;

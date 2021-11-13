@@ -9,27 +9,24 @@ namespace Player
     {
         [SerializeField] private Transform camera;
         [SerializeField] private Transform groundCheck;
-        [SerializeField] private LayerMask groundMask;
         [SerializeField] private float speed;
         [SerializeField] private float jumpForece = 2.5f;
         [SerializeField] private float turnSmoothTime = 0.1f;
         [SerializeField] private float turnSmoothVelocity;
-        [SerializeField] private float groundDistance;
-
+        [SerializeField] private float groundCheckRadius;
+        [SerializeField] private GameObject dirtyParticleFoot;
+        
         public static bool onGrounded;
         public static bool isAiming;
         public static bool hasKeyJump;
-        public GameObject characterAnimtion;
         public GameObject followTarget;
         public Quaternion nextRotation;
 
-        private AnimationsEvent animationEvent;
         private Rigidbody rbPlayer;
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
         private Vector3 angles;
-
-
+        
         #region CharacterController-OldCase
 
         // [SerializeField] private CharacterController playerCharacterController;
@@ -41,9 +38,7 @@ namespace Player
         // Start is called before the first frame update
         void Start()
         {
-            animationEvent = characterAnimtion.GetComponent<AnimationsEvent>();
             rbPlayer = GetComponent<Rigidbody>();
-            groundMask = LayerMask.NameToLayer("Ground");
         }
 
         private void FixedUpdate()
@@ -54,7 +49,8 @@ namespace Player
 
         private void CheckGround()
         {
-            onGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ~groundMask);
+            RaycastHit hitinfo;
+            onGrounded =Physics.Raycast(groundCheck.position, Vector3.down,out hitinfo, groundCheckRadius);
         }
 
         private void Movement()
@@ -62,7 +58,6 @@ namespace Player
             float xAxis = Input.GetAxisRaw("Horizontal");
             float zAxis = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(xAxis, 0f, zAxis).normalized;
-
             //rotate when aim 
             if (isAiming)
             {
@@ -96,10 +91,11 @@ namespace Player
 
                 Vector3 playerMovementDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 transform.position += playerMovementDirection * speed * Time.deltaTime;
-                
+
                 //check to running
-                if (Input.GetKey(KeyCode.LeftShift) && !isAiming)
+                if (Input.GetKey(KeyCode.LeftShift) && !isAiming && onGrounded)
                 {
+                    dirtyParticleFoot.SetActive(true);
                     if (Input.GetKeyDown(KeyCode.Space) && onGrounded) // check when running to jump 
                     {
                         hasKeyJump = true;
@@ -108,10 +104,18 @@ namespace Player
                     float speedUp = speed * 2;
                     transform.position += playerMovementDirection * speedUp * Time.deltaTime;
                 }
+                else
+                {
+                    dirtyParticleFoot.SetActive(false);
+                }
+            }
+            else if (!onGrounded || direction.magnitude < 0.1f)
+            {
+                dirtyParticleFoot.SetActive(false);
             }
         }
-        
-        
+
+
         private void ClampUpDownRotation()
         {
             //get all angel
@@ -119,7 +123,6 @@ namespace Player
             angles.z = 0;
             //get angle x 
             var angle = followTarget.transform.localEulerAngles.x;
-
             if (angle > 180 && angle < 340)
             {
                 angles.x = 340;
@@ -132,7 +135,7 @@ namespace Player
             followTarget.transform.localEulerAngles = angles;
         }
     }
-    
+
     //Cách cũ 
     //Jump follow by velocity
     // if (IsGrounded && velocity.y < 0)
@@ -146,7 +149,7 @@ namespace Player
     // velocity.y += gravity * Time.deltaTime;
     //
     // playerCharacterController.Move(velocity.normalized  * Time.deltaTime);
-        
+
     // PlayerMovement on condition input
     // if (Input.GetKey(KeyCode.LeftShift))
     // {
@@ -159,5 +162,4 @@ namespace Player
     //     speed = 1.5f;
     //     playerCharacterController.Move(playerMovementDirection.normalized * speed * Time.deltaTime);
     // }
-
 }
