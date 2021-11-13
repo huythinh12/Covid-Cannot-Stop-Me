@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -11,13 +9,18 @@ namespace Player
         private int isWalking;
         private int isRunning;
         private int isJumping;
-        // private int isDrinking;
-        // private int isThrowing;
-        // private int isHurting;
+        private int isCough;
         private int jump;
         private int death;
         private int drink;
         private int attack;
+        private int layerIndexCough;
+        private int layerIndexDeath;
+        private bool isDeath;
+        
+        // private int isDrinking;
+        // private int isThrowing;
+        // private int isHurting;
         // private int isFallEnough;
 
         // Start is called before the first frame update
@@ -26,6 +29,10 @@ namespace Player
             var characterObject = transform.GetChild(0);
             anim = characterObject.GetComponent<Animator>();
             GetAllAnimationStateFromAnimator();
+            
+            //get layerindexanimtor 
+            layerIndexCough = anim.GetLayerIndex("Cough");
+            layerIndexDeath = anim.GetLayerIndex("Death");
         }
 
         private void GetAllAnimationStateFromAnimator()
@@ -34,14 +41,16 @@ namespace Player
             isWalking = Animator.StringToHash("isWalk");
             isRunning = Animator.StringToHash("isRun");
             isJumping = Animator.StringToHash("isJump");
-            // isDrinking = Animator.StringToHash("isDrink");
-            // isThrowing = Animator.StringToHash("isThrow");
-            // isHurting = Animator.StringToHash("isHurt");
+            isCough = Animator.StringToHash("isCough");
             jump = Animator.StringToHash("jump");
             death = Animator.StringToHash("death");
             drink = Animator.StringToHash("drink");
             attack = Animator.StringToHash("attack");
+            
             // isFallEnough = Animator.StringToHash("isFallEnough");
+            // isDrinking = Animator.StringToHash("isDrink");
+            // isThrowing = Animator.StringToHash("isThrow");
+            // isHurting = Animator.StringToHash("isHurt");
         }
 
         // Update is called once per frame
@@ -52,19 +61,24 @@ namespace Player
 
         private void ActionsInputKey()
         {
-            var direction = GetDirection();
-            CheckJumpAnimtion();
-            CheckMoveToAnimation(direction);
-            CheckAttackAnimation();
-            CheckHealingAnimation();
+            if (!CheckAnimtionDeath())
+            {
+                var isMove = GetDirection();
+                CheckJumpAnimtion();
+                CheckMoveToAnimation(isMove);
+                CheckAttackAnimation();
+                CheckHealingAnimation();
+                // CheckCoughAnimation(isMove);
+            }
+         
         }
 
-        private static Vector3 GetDirection()
+        private bool GetDirection()
         {
             float xAxis = Input.GetAxisRaw("Horizontal");
             float zAxis = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(xAxis, 0f, zAxis).normalized;
-            return direction;
+            return direction.magnitude >= 0.1f;
         }
 
         private void CheckHealingAnimation()
@@ -83,14 +97,16 @@ namespace Player
             }
         }
 
-        private void CheckMoveToAnimation(Vector3 direction)
+        private void CheckMoveToAnimation(bool isMove)
         {
-            if (direction.magnitude >= 0.1f)
+            if (isMove)
             {
                 anim.SetBool(isIdleing, false);
-                if (Input.GetKey(KeyCode.LeftShift) && !PlayerMovementController.isAiming && !AnimationsEvent.isFallEnough)
+                if (Input.GetKey(KeyCode.LeftShift) && !PlayerMovementController.isAiming &&
+                    !AnimationsEvent.isFallEnough)
                 {
-                    if (PlayerMovementController.hasKeyJump && PlayerMovementController.onGrounded)
+                    if (PlayerMovementController.hasKeyJump &&
+                        PlayerMovementController.onGrounded) //check jump forward 
                     {
                         PlayerMovementController.hasKeyJump = false;
                         anim.SetTrigger(jump);
@@ -118,11 +134,42 @@ namespace Player
 
         private void CheckJumpAnimtion()
         {
+            // fall enough from in air animtion
             if (AnimationsEvent.isFallEnough && PlayerMovementController.onGrounded)
             {
                 anim.SetBool(isJumping, false);
                 AnimationsEvent.isFallEnough = false;
             }
+        }
+
+        private void CheckCoughAnimation(bool isMove) {
+            if (!PlayerMovementController.isAiming && !isMove)
+            {
+                anim.SetLayerWeight(layerIndexCough,1);
+                anim.SetBool(isCough, true);
+            }
+            else 
+            {
+                anim.SetLayerWeight(layerIndexCough,0);
+                anim.SetBool(isCough, false);
+            }
+        }
+
+        private bool CheckAnimtionDeath()
+        {
+            //dead
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                anim.SetTrigger(death);
+                anim.SetLayerWeight(layerIndexDeath,1);
+                return true;
+            }//live
+            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                anim.SetLayerWeight(layerIndexDeath,0);
+                return false;
+            }
+            return false;
         }
     }
 }

@@ -22,18 +22,13 @@ namespace Player
         public GameObject characterAnimtion;
         public GameObject followTarget;
         public Quaternion nextRotation;
-       
-        public float fallingVelocity;
-
-        [FormerlySerializedAs("isFallingEnoughtAnim")]
-        public bool isFallingEnoughAnim;
 
         private AnimationsEvent animationEvent;
         private Rigidbody rbPlayer;
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
         private Vector3 angles;
-        public bool isInputJump;
+
 
         #region CharacterController-OldCase
 
