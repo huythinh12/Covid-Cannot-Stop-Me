@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
+using TreeEditor;
+using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks.Tutorials
 {
@@ -6,15 +8,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
     [TaskIcon("Assets/Behavior Designer Tutorials/Tasks/Editor/{SkinColor}SeekIcon.png")]
     public class Seek : Action
     {
-        [Tooltip("The speed of the agent")] public SharedFloat speed = 10;
-
-        [Tooltip("The angular speed of the agent")]
-        public SharedFloat angularSpeed = 120;
-
-        [Tooltip(
-            "The agent has arrived when the destination is less than the specified amount. This distance should be greater than or equal to the NavMeshAgent StoppingDistance.")]
-        public SharedFloat arriveDistance = 0.2f;
-
         [Tooltip("The GameObject that the agent is seeking")]
         public SharedTransform target;
 
@@ -24,22 +17,23 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         public SharedBool isTimeChasingOut;
         public SharedTransform pointToPatrol;
         public SharedTransform pointToMission;
-        
+
         // Component references
         protected UnityEngine.AI.NavMeshAgent navMeshAgent;
 
-        private Animator anim;
-        private int isRuninng;
-        
+        private BehaviorTree behaviorTree;
+
+        //"The agent has arrived when the destination is less than the specified amount. This distance should be greater than or equal to the NavMeshAgent StoppingDistance."
+        private float arriveDistance = 0.2f;
+        private bool isColliderHuman;
+
         /// <summary>
         /// Cache the component references.
         /// </summary>
         public override void OnAwake()
         {
             navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-
-            anim = GetComponent<Animator>();
-            isRuninng = Animator.StringToHash("isRunning");
+            behaviorTree = GetComponent<BehaviorTree>();
         }
 
         /// <summary>
@@ -47,8 +41,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         /// </summary>
         public override void OnStart()
         {
-            navMeshAgent.speed = speed.Value;
-            navMeshAgent.angularSpeed = angularSpeed.Value;
 #if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
             navMeshAgent.Resume();
 #else
@@ -66,6 +58,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
             {
                 return TaskStatus.Success;
             }
+
             SetDestination(Target());
 
             return TaskStatus.Running;
@@ -76,21 +69,19 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         {
             if (target.Value != null)
             {
+                behaviorTree.SendEvent<bool>("Chasing", true);
+                transform.LookAt(target.Value.position);
                 return target.Value.position;
             }
-            else if (pointToMission.Value != null)
+
+            behaviorTree.SendEvent<bool>("Chasing", false);
+
+            if (pointToMission.Value != null)
             {
-                Debug.Log("chay vao mission");
                 return pointToMission.Value.position;
             }
-            else if (pointToPatrol.Value != null)
-            {
-                return pointToPatrol.Value.position;
-            }
-            else
-            {
-                return targetPosition.Value;
-            }
+
+            return pointToPatrol.Value != null ? pointToPatrol.Value.position : targetPosition.Value;
         }
 
         /// <summary>
@@ -98,14 +89,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         /// </summary>
         /// <param name="destination">The destination to set.</param>
         /// <returns>True if the destination is valid.</returns>
-        private bool SetDestination(Vector3 destination)
+        private void SetDestination(Vector3 destination)
         {
-// #if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
-//             navMeshAgent.Resume();
-// #else
-//             navMeshAgent.isStopped = false;
-// #endif
-            return navMeshAgent.SetDestination(destination);
+#if UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
+            navMeshAgent.Resume();
+#else
+            navMeshAgent.isStopped = false;
+#endif
+            navMeshAgent.SetDestination(destination);
         }
 
         /// <summary>
@@ -125,7 +116,12 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
                 remainingDistance = navMeshAgent.remainingDistance;
             }
 
-            return remainingDistance <= arriveDistance.Value;
+            if (isColliderHuman)
+            {
+                behaviorTree.SendEvent<Transform>("CatchedPlayer",target.Value);
+                return false;
+            }
+            return remainingDistance <= arriveDistance;
         }
 
         /// <summary>
@@ -159,5 +155,16 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         {
             Stop();
         }
+
+        public override void OnCollisionEnter(Collision collision)
+        {
+            base.OnCollisionEnter(collision);
+            if (collision.collider.CompareTag("Player"))
+            {
+                isColliderHuman = true;
+            }
+        }
+
+      
     }
 }
