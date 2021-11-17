@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DefaultNamespace;
+
 public class DataPersistance : MonoBehaviour
 {
+    public const string PLAYERNAME = "PlayerName";
+    public const string DIFFICULTY = "Difficulty";
+    public const string VOLUME = "Volume";
     public static DataPersistance Instance;
     private void Awake()
     {
@@ -17,13 +17,14 @@ public class DataPersistance : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetDifficulty(int difficulty)
+    public void SavePlayerName(string name)
     {
-        PlayerPrefs.SetInt("Difficulty",difficulty);
+        PlayerPrefs.SetString(PLAYERNAME,name);
     }
 
-    public void SetSound(float sound)
+    public void SetDifficulty(int difficulty)
     {
-        PlayerPrefs.SetFloat("Sound",sound);
+        PlayerPrefs.SetInt(DIFFICULTY,difficulty);
     }
+    
 }

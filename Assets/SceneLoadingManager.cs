@@ -1,13 +1,10 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
-using Random = System.Random;
 
 public class SceneLoadingManager : MonoBehaviour
 {
@@ -76,7 +73,7 @@ public class SceneLoadingManager : MonoBehaviour
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
         // sử dụng để cộng thêm tg mặc định nếu cần
-        float minimumLoadTime = UnityEngine.Random.Range(8f,12f);
+        float minimumLoadTime = Random.Range(8f,12f);
         loadTimer = new Stopwatch();
         loadTimer.Start();
         float percentLoaded = 0;
