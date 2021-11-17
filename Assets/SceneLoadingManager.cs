@@ -11,6 +11,9 @@ public class SceneLoadingManager : MonoBehaviour
     public static SceneLoadingManager Instance;
     public static UnityEvent<bool> OnEventFadeIn = new UnityEvent<bool>();
     public float timeToCrossFade;
+    public bool isGameReady;
+    public float minimumLoadTime = 10f;
+    public float maximumLoadTime = 12f;
     private bool isTurnOn;
     private Slider slider;
     private int cacheIndex;
@@ -47,6 +50,9 @@ public class SceneLoadingManager : MonoBehaviour
 
     public void LoadLevel(int Index)
     {
+        Time.timeScale = 1;
+        
+        isGameReady = false;
         cacheIndex = Index;
         if (Index != 1)
         {
@@ -73,18 +79,20 @@ public class SceneLoadingManager : MonoBehaviour
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
         // sử dụng để cộng thêm tg mặc định nếu cần
-        float minimumLoadTime = Random.Range(8f,12f);
+     
         loadTimer = new Stopwatch();
         loadTimer.Start();
+        var loadTimeEnd = Random.Range(minimumLoadTime, maximumLoadTime);
         float percentLoaded = 0;
-        while (loadTimer.Elapsed.TotalSeconds <= minimumLoadTime)
+        while (loadTimer.Elapsed.TotalSeconds <= loadTimeEnd)
         {
-            percentLoaded = (float) (loadTimer.Elapsed.TotalSeconds / minimumLoadTime);
+            percentLoaded = (float) (loadTimer.Elapsed.TotalSeconds / loadTimeEnd);
             slider.value = percentLoaded;
             loadingText.text = string.Format("{0:P0}", percentLoaded);
 
             yield return null;
         }
+        isGameReady = true;
 
         loadTimer.Stop();
         OnEventFadeIn?.Invoke(false);

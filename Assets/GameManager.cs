@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public float timer;
     public bool isWin;
-    public bool isGameReady;
     public UnityEvent OnGameReady;
     
     private bool isTurnOn;
@@ -26,18 +25,13 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex > 1 && isTurnOn)
+        if (SceneManager.GetActiveScene().buildIndex > 1 && !isTurnOn)
         {
-            isTurnOn = false;
+            isTurnOn = true;
             StartCoroutine(CountDown());
         }
     }
@@ -46,16 +40,14 @@ public class GameManager : MonoBehaviour
     {
         loadTimer = new Stopwatch();
         loadTimer.Start();
+        
         while (loadTimer.Elapsed.TotalSeconds <= timer)
         {
-            print(loadTimer.Elapsed.TotalSeconds + " second count down");
             yield return null;
         }
 
-        print("het thoi gina r ne");
         Time.timeScale = 0;
-        
-        print("xin chao timer stop");
+        SceneLoadingManager.Instance.LoadLevel(0);
     }
    
 }
