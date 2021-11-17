@@ -7,12 +7,17 @@ namespace Player
 {
     public class AimController : MonoBehaviour
     {
+        [SerializeField] private Cinemachine.CinemachineVirtualCameraBase aimCamVirtual;
+        
         public GameObject camThird, camAim;
         public GameObject aimRecticle;
-        private PlayerMovementController playerMovementController;
+        public static Vector3 aimDir;
+
+        private BulletManager bulletManager;
+
         private void Start()
         {
-            playerMovementController = GetComponent<PlayerMovementController>();
+            bulletManager = GetComponent<BulletManager>();
         }
 
         // Update is called once per frame
@@ -20,12 +25,15 @@ namespace Player
         {
             if (camAim.activeInHierarchy)
             {
-                playerMovementController.isAiming = true;
+                PlayerMovementController.isAiming = true;
                 aimRecticle.SetActive(true);
+                bulletManager.enabled = true;
+                GetAimDir();
             }
             else
             {
-                playerMovementController.isAiming = false;
+                PlayerMovementController.isAiming = false;
+                bulletManager.enabled = false;
                 aimRecticle.SetActive(false);
             }
             if (Input.GetMouseButtonDown(1))
@@ -48,6 +56,11 @@ namespace Player
         {
             yield return new WaitForSeconds(second);
             camAim.transform.GetChild(1).gameObject.SetActive(camAim.activeInHierarchy);
+        }
+
+        private void GetAimDir()
+        {
+            aimDir = aimCamVirtual.State.FinalOrientation * Vector3.forward;
         }
     }
 }

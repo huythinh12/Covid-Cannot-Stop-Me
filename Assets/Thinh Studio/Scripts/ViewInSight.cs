@@ -19,9 +19,17 @@ public class ViewInSight : Conditional
     
     private Transform[] possibleTargets;
     private int isRunning;
-    
+    private float saveViewDistancePersistance;
+
+    public override void OnAwake()
+    {
+        saveViewDistancePersistance = viewDistance.Value;
+    }
+
     public override TaskStatus OnUpdate()
     {
+        FieldVisibleTarget();
+        
         if (FindVisibleTargets())
         {
             colorLight.Value = Color.red;
@@ -33,9 +41,7 @@ public class ViewInSight : Conditional
     
     bool FindVisibleTargets()
     {
-       // visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewDistance.Value, targetMask);
-
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             target.Value = targetsInViewRadius[i].transform;
@@ -46,13 +52,26 @@ public class ViewInSight : Conditional
                 float dstToTarget = Vector3.Distance(transform.position, target.Value.position);
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
-                    //tạm thời chưa dùng tới
-                    //visibleTargets.Add (target); đây là target nằm trong tầm nhắm view của a.i để truyền giá trị này đi cho nơi khác dùng 
                     return true;
                 }
             
             }
         }
         return false;
+    }
+
+    private void FieldVisibleTarget()
+    {
+        viewDistance.Value = saveViewDistancePersistance;
+        RaycastHit hit;
+        if (transform != null)
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), hitInfo: out hit,
+                viewDistance.Value))
+            {
+                if (!hit.collider.CompareTag("Target"))
+                {
+                    viewDistance.Value = hit.distance;
+                }
+            }
     }
 }

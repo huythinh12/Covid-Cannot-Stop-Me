@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class U10PS_DissolveOverTime : MonoBehaviour
 {
-    private MeshRenderer meshRenderer;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
 
     public float speed = .5f;
 
-    private void Start(){
-        meshRenderer = this.GetComponent<MeshRenderer>();
+    private void Start()
+    {
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     private float t = 0.0f;
-    private void Update(){
-        Material[] mats = meshRenderer.materials;
 
-        mats[0].SetFloat("_Cutoff", Mathf.Sin(t * speed));
+    private void Update()
+    {
+        // Material[] mats = meshRenderer.materials;
+        Material[] mats1 = skinnedMeshRenderer.materials;
+
+        mats1[0].SetFloat("_Cutoff", Mathf.Sin(t * speed));
         t += Time.deltaTime;
-        
         // Unity does not allow meshRenderer.materials[0]...
-        meshRenderer.materials = mats;
+        skinnedMeshRenderer.materials = mats1;
     }
 }

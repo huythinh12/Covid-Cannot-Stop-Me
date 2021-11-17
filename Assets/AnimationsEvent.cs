@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class AnimationsEvent : MonoBehaviour
 {
-    [HideInInspector] public bool isJumpReady;
-    [HideInInspector] public bool isFallEnough;
-    public void TriggerJump()
-    {
-        isJumpReady = true;
-    }
-
+    // public static bool isJumpPlaying;
+    // public static bool isJumpBegin;
+    // public static bool isThrowEnd;
+    public static bool isFallEnough;
+    // public void TriggerJump()
+    // {
+    //     isJumpPlaying = true;
+    // }
+    //
+    // public void TriggerJumpBegin()
+    // {
+    //     isJumpBegin = true;
+    // }
     public void TriggerFalling()
     {
-        isFallEnough = false;
+        isFallEnough = true;
+    }
+
+    // public void TriggerThrowEnd()
+    // {
+    //     isThrowEnd = true;
+    // }
+    
+    public void ThrowBall()
+    {
+        var ballScript = FindObjectOfType<Bullet>();
+        ballScript.ReleaseMe();
+           
     }
 }

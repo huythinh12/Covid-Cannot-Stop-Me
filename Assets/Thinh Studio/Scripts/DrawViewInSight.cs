@@ -10,14 +10,14 @@ public class DrawViewInSight : Action
     [UnityEngine.Tooltip("The distance that the agent can see")]
     public SharedFloat viewDistance;
 
-    public LayerMask obstacleMask = LayerMask.NameToLayer("Obstacles");
+    // public LayerMask obstacleMask = LayerMask.NameToLayer("Obstacles");
     public SharedBool isTimeChasingOut;
     public SharedColor colorLight;
-    private float saveDistance;
+    private float saveDist;
 
     public override void OnAwake()
     {
-        saveDistance = viewDistance.Value;
+        saveDist = viewDistance.Value;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class DrawViewInSight : Action
         var halfFOV = fieldOfViewAngle.Value * 0.5f;
         var beginDirection = Quaternion.AngleAxis(-halfFOV, Vector3.up) * Owner.transform.forward;
         UnityEditor.Handles.DrawSolidArc(Owner.transform.position, Owner.transform.up, beginDirection,
-            fieldOfViewAngle.Value, viewDistance.Value);
+            fieldOfViewAngle.Value, saveDist);
 
         UnityEditor.Handles.color = oldColor;
 #endif
@@ -46,15 +46,18 @@ public class DrawViewInSight : Action
     private void ViewRange()
     {
         if (viewDistance.Value != null)
-            viewDistance.Value = saveDistance;
+        {
+            saveDist = viewDistance.Value;
+        }
+
         RaycastHit hit;
         if (transform != null)
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), hitInfo: out hit,
-                Mathf.Infinity))
+                saveDist))
             {
                 if (!hit.collider.CompareTag("Target"))
                 {
-                    viewDistance.Value = hit.distance;
+                    saveDist = hit.distance;
                 }
             }
     }

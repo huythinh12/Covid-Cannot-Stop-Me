@@ -8,9 +8,10 @@ namespace Menu
     {
         public void StartGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+           SceneLoadingManager.Instance.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
+   
         public void QuitGame()
         {
             Application.Quit();

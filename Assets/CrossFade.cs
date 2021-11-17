@@ -1,0 +1,40 @@
+using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
+
+public class CrossFade : MonoBehaviour
+{
+    private void OnEnable()
+    {
+        SceneLoadingManager.OnEventFadeIn.AddListener(ReceivedEventCrossFade);
+    }
+
+    private void OnDisable()
+    {
+        SceneLoadingManager.OnEventFadeIn.RemoveListener(ReceivedEventCrossFade);
+    }
+
+    private void ReceivedEventCrossFade(bool isFadeIn)
+    {
+        if (isFadeIn)
+        {
+            FadeIn();
+        }
+        else
+        {
+            FadeOut();
+        }
+    }
+
+    public void FadeIn()
+    {
+        GetComponent<Image>().DOFade(0, SceneLoadingManager.Instance.timeToCrossFade).SetEase(Ease.Linear)
+            .SetUpdate(true);
+    }
+
+    public void FadeOut()
+    {
+        GetComponent<Image>().DOFade(1, SceneLoadingManager.Instance.timeToCrossFade).SetEase(Ease.Linear)
+            .SetUpdate(true);
+    }
+}
