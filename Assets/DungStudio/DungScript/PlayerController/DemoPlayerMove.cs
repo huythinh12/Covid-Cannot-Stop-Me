@@ -6,7 +6,7 @@ public class DemoPlayerMove : MonoBehaviour
 {
     //Reference
     [SerializeField] private float moveSpeed;
-    [SerializeField] private GameObject playerParticleBound;
+    //[SerializeField] private GameObject playerParticleBound;
 
     private float xAxis;
     private float zAxis;
@@ -17,17 +17,17 @@ public class DemoPlayerMove : MonoBehaviour
     }
    
     //Collider
-    private void OnTriggerEnter(Collider other)
-    {
-        playerParticleBound.SetActive(true);
-        Debug.Log("Trigger Particle Active");
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        playerParticleBound.SetActive(false);
-        Debug.Log("Trigger Particle Deactive");
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     playerParticleBound.SetActive(true);
+    //     Debug.Log("Trigger Particle Active");
+    // }
+    //
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     playerParticleBound.SetActive(false);
+    //     Debug.Log("Trigger Particle Deactive");
+    // }
 
     //My Method
     private void PlayerMove()
