@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
@@ -9,8 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public float timer;
     public bool isWin;
-    public static UnityEvent OnGameReady;
+    public bool isCameraReadyInGame;
     public float timeToReady;
+    
     private bool isTurnOn;
     private Stopwatch loadTimer;
 
@@ -22,10 +24,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -38,10 +41,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDown()
     {
-         timeToReady = 5;
-        yield return new WaitForSeconds(timeToReady);
-        OnGameReady?.Invoke();
-   
+        var cameraTransition = FindObjectOfType<CameraTransition>();
+        yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone);
+        cameraTransition.OnCameraReady.AddListener(ReceivedCameraReadyEvent);
+        yield return new WaitUntil(() => isCameraReadyInGame);
+
         loadTimer = new Stopwatch();
         loadTimer.Start();
         while (loadTimer.Elapsed.TotalSeconds <= timer)
@@ -50,7 +54,14 @@ public class GameManager : MonoBehaviour
         }
 
         Time.timeScale = 0;
+        cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
+
         SceneLoadingManager.Instance.LoadLevel(0);
     }
-   
+
+    private void ReceivedCameraReadyEvent(bool isCameraReady)
+    {
+        isCameraReadyInGame = isCameraReady;
+    }
+    
 }

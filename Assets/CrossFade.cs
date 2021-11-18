@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CrossFade : MonoBehaviour
 {
@@ -18,7 +21,7 @@ public class CrossFade : MonoBehaviour
     {
         if (isFadeIn)
         {
-            FadeIn();
+           StartCoroutine(FadeIn());
         }
         else
         {
@@ -26,10 +29,13 @@ public class CrossFade : MonoBehaviour
         }
     }
 
-    public void FadeIn()
+    IEnumerator FadeIn()
     {
         GetComponent<Image>().DOFade(0, SceneLoadingManager.Instance.timeToCrossFade).SetEase(Ease.Linear)
             .SetUpdate(true);
+        yield return new WaitForSeconds(1);
+        SceneLoadingManager.hasLoadingDone = true;
+
     }
 
     public void FadeOut()

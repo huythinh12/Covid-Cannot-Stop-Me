@@ -10,6 +10,7 @@ public class SceneLoadingManager : MonoBehaviour
 {
     public static SceneLoadingManager Instance;
     public static UnityEvent<bool> OnEventFadeIn = new UnityEvent<bool>();
+    public static bool hasLoadingDone;
     public float timeToCrossFade;
     public bool isGameReady;
     public float minimumLoadTime = 10f;
@@ -51,7 +52,6 @@ public class SceneLoadingManager : MonoBehaviour
     public void LoadLevel(int Index)
     {
         Time.timeScale = 1;
-        
         isGameReady = false;
         cacheIndex = Index;
         if (Index != 1)
@@ -78,8 +78,8 @@ public class SceneLoadingManager : MonoBehaviour
 
     IEnumerator LoadAsynchronously(int sceneIndex)
     {
+        hasLoadingDone = false;
         // sử dụng để cộng thêm tg mặc định nếu cần
-     
         loadTimer = new Stopwatch();
         loadTimer.Start();
         var loadTimeEnd = Random.Range(minimumLoadTime, maximumLoadTime);
