@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public float timer;
     public bool isWin;
-    public UnityEvent OnGameReady;
-    
+    public static UnityEvent OnGameReady;
+    public float timeToReady;
     private bool isTurnOn;
     private Stopwatch loadTimer;
 
@@ -38,9 +38,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDown()
     {
+         timeToReady = 5;
+        yield return new WaitForSeconds(timeToReady);
+        OnGameReady?.Invoke();
+   
         loadTimer = new Stopwatch();
         loadTimer.Start();
-        
         while (loadTimer.Elapsed.TotalSeconds <= timer)
         {
             yield return null;
