@@ -10,12 +10,13 @@ namespace Player
         [SerializeField] private Transform camera;
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float speed;
-        [SerializeField] private float jumpForece = 2.5f;
+        //pending
+        // [SerializeField] private float jumpForece = 2.5f;
         [SerializeField] private float turnSmoothTime = 0.1f;
         [SerializeField] private float turnSmoothVelocity;
         [SerializeField] private float groundCheckRadius;
         [SerializeField] private GameObject dirtyParticleFoot;
-        
+
         public static bool onGrounded;
         public static bool isAiming;
         public static bool hasKeyJump;
@@ -26,7 +27,7 @@ namespace Player
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
         private Vector3 angles;
-        
+
         #region CharacterController-OldCase
 
         // [SerializeField] private CharacterController playerCharacterController;
@@ -50,7 +51,7 @@ namespace Player
         private void CheckGround()
         {
             RaycastHit hitinfo;
-            onGrounded =Physics.Raycast(groundCheck.position, Vector3.down,out hitinfo, groundCheckRadius);
+            onGrounded = Physics.Raycast(groundCheck.position, Vector3.down, out hitinfo, groundCheckRadius);
         }
 
         private void Movement()
@@ -96,11 +97,12 @@ namespace Player
                 if (Input.GetKey(KeyCode.LeftShift) && !isAiming && onGrounded)
                 {
                     dirtyParticleFoot.SetActive(true);
-                    if (Input.GetKeyDown(KeyCode.Space) && onGrounded) // check when running to jump 
-                    {
-                        hasKeyJump = true;
-                        rbPlayer.AddForce(Vector3.up * jumpForece, ForceMode.Impulse);
-                    }
+                    //pending
+                    // if (Input.GetKeyDown(KeyCode.Space) && onGrounded) // check when running to jump 
+                    // {
+                    //     hasKeyJump = true;
+                    //     rbPlayer.AddForce(Vector3.up * jumpForece, ForceMode.Impulse);
+                    // }
                     float speedUp = speed * 2;
                     transform.position += playerMovementDirection * speedUp * Time.deltaTime;
                 }
