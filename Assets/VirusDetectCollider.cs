@@ -6,8 +6,11 @@ using UnityEngine.Events;
 [DefaultExecutionOrder(300)]
 public class VirusDetectCollider : MonoBehaviour
 {
+    public ParticleSystem particleInject;
     public bool isDestroyUnActiveVirus;
     public UnityEvent UnityEvent_OnGetHit;
+    private bool isTurnOn;
+
     public void OnEnable()
     {
         var behaviorTree = GetComponent<BehaviorTree>();
@@ -22,15 +25,20 @@ public class VirusDetectCollider : MonoBehaviour
 
     public void ReceivedEvent(Transform targetPos)
     {
-        GetComponent<SphereCollider>().enabled = false;
-        Injection(targetPos);
+        GetComponent<SphereCollider>().isTrigger = true;
+        if (!isTurnOn)
+        {
+            Injection(targetPos);
+
+            isTurnOn = true;
+            Invoke("DestroyVirusAfterInject",0.5f);
+        }
     }
 
     private void Injection(Transform target)
     {
         transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Linear);
         transform.DOMove(target.position + new Vector3(0, 1.5f, 0), 0.5f);
-        Destroy(gameObject, 2.5f);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -57,7 +65,13 @@ public class VirusDetectCollider : MonoBehaviour
                 GetComponent<VirusHealth>().GetHit();
             }
         }
-        
+    }
+
+    private void DestroyVirusAfterInject()
+    {
+        Instantiate(particleInject, new Vector3(transform.position.x, 1.2f, transform.position.z),
+            Quaternion.identity);
+        Destroy(gameObject,0.5f);
     }
 
     private void DestroyUnActiveVirus()

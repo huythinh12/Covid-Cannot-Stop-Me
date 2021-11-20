@@ -116,7 +116,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
                 remainingDistance = navMeshAgent.remainingDistance;
             }
 
-            if (isColliderHuman)
+            if (isColliderHuman && behaviorTree)
             {
                 behaviorTree.SendEvent<Transform>("CatchedPlayer",target.Value);
                 return false;

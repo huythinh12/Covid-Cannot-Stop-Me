@@ -64,7 +64,8 @@ namespace Player
             if (!CheckAnimtionDeath())
             {
                 var isMove = GetDirection();
-                CheckJumpAnimtion();
+                //pending
+                // CheckJumpAnimtion();
                 CheckMoveToAnimation(isMove);
                 CheckAttackAnimation();
                 CheckHealingAnimation();
@@ -102,21 +103,24 @@ namespace Player
             if (isMove)
             {
                 anim.SetBool(isIdleing, false);
-                if (Input.GetKey(KeyCode.LeftShift) && !PlayerMovementController.isAiming &&
-                    !AnimationsEvent.isFallEnough)
+                if (Input.GetKey(KeyCode.LeftShift) && !PlayerMovementController.isAiming /*&&
+                    !AnimationsEvent.isFallEnough*/)
                 {
-                    if (PlayerMovementController.hasKeyJump &&
-                        PlayerMovementController.onGrounded) //check jump forward 
-                    {
-                        PlayerMovementController.hasKeyJump = false;
-                        anim.SetTrigger(jump);
-                        anim.SetBool(isJumping, true);
-                    }
-                    else
-                    {
-                        anim.SetBool(isRunning, true);
-                        anim.SetBool(isWalking, false);
-                    }
+                    //pending
+                    // if (PlayerMovementController.hasKeyJump &&
+                    //     PlayerMovementController.onGrounded) //check jump forward 
+                    // {
+                    //     PlayerMovementController.hasKeyJump = false;
+                    //     anim.SetTrigger(jump);
+                    //     anim.SetBool(isJumping, true);
+                    // }
+                    // else
+                    // {
+                        // anim.SetBool(isRunning, true);
+                        // anim.SetBool(isWalking, false);
+                    // }
+                    anim.SetBool(isRunning, true);
+                    anim.SetBool(isWalking, false);
                 }
                 else
                 {
@@ -132,15 +136,16 @@ namespace Player
             }
         }
 
-        private void CheckJumpAnimtion()
-        {
-            // fall enough from in air animtion
-            if (AnimationsEvent.isFallEnough && PlayerMovementController.onGrounded)
-            {
-                anim.SetBool(isJumping, false);
-                AnimationsEvent.isFallEnough = false;
-            }
-        }
+        //pending
+        // private void CheckJumpAnimtion()
+        // {
+        //     // fall enough from in air animtion
+        //     if (AnimationsEvent.isFallEnough && PlayerMovementController.onGrounded)
+        //     {
+        //         anim.SetBool(isJumping, false);
+        //         AnimationsEvent.isFallEnough = false;
+        //     }
+        // }
 
         private void CheckCoughAnimation(bool isMove) {
             if (!PlayerMovementController.isAiming && !isMove)
