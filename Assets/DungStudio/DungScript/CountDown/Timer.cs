@@ -97,6 +97,7 @@ public class Timer : MonoBehaviour
                 remainingDuration--;
                 yield return new WaitForSeconds(1f);
             }
+            yield return null;
         }
         End();
     }

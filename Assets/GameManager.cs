@@ -10,11 +10,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public float timer;
     public bool isWin;
+    public bool isFail;
     public bool isCameraReadyInGame;
     public float timeToReady;
-    public float showTimeCountDown;
+    public float timeCountDown;
     public bool isEndTime;
+    public bool isAllEnemyDefeatLV1;
     private bool isTurnOn;
+    private float saveTimerPersistance;
     private Stopwatch loadTimer;
 
 
@@ -30,38 +33,42 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        saveTimerPersistance = timer;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex > 1 && !isTurnOn)
         {
+            //default settup when game begin
+            isWin = false;
+            isFail = false;
             isTurnOn = true;
             isEndTime = false;
+            isCameraReadyInGame = false;
+            timer = saveTimerPersistance;
             StartCoroutine(CountDown());
         }
     }
 
     IEnumerator CountDown()
     {
-        var cameraTransition = FindObjectOfType<CameraTransition>();
+        // var cameraTransition = FindObjectOfType<CameraTransition>();
         yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone);
-        cameraTransition.OnCameraReady.AddListener(ReceivedCameraReadyEvent);
+        // cameraTransition.OnCameraReady.AddListener(ReceivedCameraReadyEvent);
         yield return new WaitUntil(() => isCameraReadyInGame);
 
-        loadTimer = new Stopwatch();
-        loadTimer.Start();
-        while (loadTimer.Elapsed.TotalSeconds <= timer)
+        while (!isEndTime)
         {
-            var saveTimer = timer;
-            saveTimer -= (int) loadTimer.Elapsed.TotalSeconds;
-            showTimeCountDown = saveTimer;
             yield return null;
         }
+   
 
-        showTimeCountDown = 0;
-        isEndTime = true;
         yield return new WaitForSeconds(2);
-        cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
+        // cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
         
         SceneLoadingManager.Instance.LoadLevel(0);
     }
