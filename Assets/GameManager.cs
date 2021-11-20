@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public bool isWin;
     public bool isCameraReadyInGame;
     public float timeToReady;
-    
+    public float showTimeCountDown;
+    public bool isEndTime;
     private bool isTurnOn;
     private Stopwatch loadTimer;
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex > 1 && !isTurnOn)
         {
             isTurnOn = true;
+            isEndTime = false;
             StartCoroutine(CountDown());
         }
     }
@@ -50,12 +52,17 @@ public class GameManager : MonoBehaviour
         loadTimer.Start();
         while (loadTimer.Elapsed.TotalSeconds <= timer)
         {
+            var saveTimer = timer;
+            saveTimer -= (int) loadTimer.Elapsed.TotalSeconds;
+            showTimeCountDown = saveTimer;
             yield return null;
         }
 
-        Time.timeScale = 0;
+        showTimeCountDown = 0;
+        isEndTime = true;
+        yield return new WaitForSeconds(2);
         cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
-
+        
         SceneLoadingManager.Instance.LoadLevel(0);
     }
 

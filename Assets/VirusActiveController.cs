@@ -13,8 +13,8 @@ public class VirusActiveController : MonoBehaviour
     public float timeActive;
     public ParticleSystem particleActive;
     public Texture m_MainTexture;
-    public bool isActiveVirus; 
-    
+    public bool isActiveVirus;
+
     //demo 
     public Text txt;
     private Renderer m_Renderer;
@@ -22,7 +22,9 @@ public class VirusActiveController : MonoBehaviour
     private BehaviorTree behaviorTree;
     private float posYBodyOrigin = 1.24737f;
     private NavMeshAgent agent;
+
     private Transform bodyRoot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,26 +42,27 @@ public class VirusActiveController : MonoBehaviour
     {
         while (timeActive >= 0)
         {
-            txt.text = timeActive.ToString();
+            if (txt != null)
+                txt.text = timeActive.ToString();
             timeActive--;
             yield return new WaitForSeconds(1);
         }
+
         float timeAction = 2;
         bodyRoot.DOMoveY(posYBodyOrigin, timeAction);
-        
+
         yield return new WaitForSeconds(timeAction);
-        var particle = Instantiate(particleActive,transform.position + new Vector3(0,2,0), Quaternion.identity);
-        
+        var particle = Instantiate(particleActive, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
+
         yield return null;
         if (!GetComponent<VirusDetectCollider>().isDestroyUnActiveVirus)
         {
             isActiveVirus = true;
-            Destroy(particle,1f);
+            Destroy(particle, 1f);
             agent.enabled = true;
             behaviorTree.enabled = true;
             anim.enabled = true;
             m_Renderer.material.SetTexture("_MainTex", m_MainTexture);
-        }    
-       
+        }
     }
 }
