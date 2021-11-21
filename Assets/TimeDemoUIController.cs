@@ -20,7 +20,7 @@ public class TimeDemoUIController : MonoBehaviour
         {
             if (GameManager.Instance.isCameraReadyInGame)
             {
-                time.text = GameManager.Instance.showTimeCountDown.ToString();
+                time.text = GameManager.Instance.timeCountDown.ToString();
             }
 
             if (GameManager.Instance.isEndTime)

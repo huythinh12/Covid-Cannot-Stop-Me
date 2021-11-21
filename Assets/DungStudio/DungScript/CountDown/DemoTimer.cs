@@ -6,14 +6,16 @@ public class DemoTimer : MonoBehaviour
 {
     [SerializeField] private Timer ClockTimer;
     [SerializeField] private int NumberTime;
-    
-    void Start()
-    {
-        StartCountingClock();
-    }
+    private bool isTurnOn;
     private void Update()
     {
-        //PauseGame();
+        if (GameManager.Instance != null && !isTurnOn)
+        {
+            NumberTime = (int)GameManager.Instance.timer;
+            StartCountingClock();
+            isTurnOn = true;
+        }
+        PauseGame();
     }
     private void StartCountingClock()
     {
@@ -21,14 +23,15 @@ public class DemoTimer : MonoBehaviour
                     .SetDuration(NumberTime)
                     .OnBegin(() =>Debug.Log("Timer started"))
                     .OnChange((remainingSeconds) => Debug.Log("Timer changed : " + remainingSeconds))
-                    .OnEnd(() => Debug.Log("Timer ended"))
-                    //.OnPause(IsPaused => Debug.Log("----Paused : "+ IsPaused))
+                    .OnEnd(() => GameManager.Instance.isEndTime = true)
+                    .OnPause(IsPaused => Debug.Log("----Paused : "+ IsPaused))
                     .Begin();
     }
     private void PauseGame()
     {
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown(KeyCode.Escape)|| PauseGameController.isClickedContinue)
         {
+            PauseGameController.isClickedContinue = false;
             ClockTimer.SetPause(!ClockTimer.IsPause);
         }
     }
