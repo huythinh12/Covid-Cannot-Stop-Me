@@ -1,6 +1,4 @@
-﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
-using TreeEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks.Tutorials
 {
