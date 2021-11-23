@@ -1,35 +1,29 @@
-using BehaviorDesigner.Runtime.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.PlayerLoop;
-using BehaviorDesigner.Runtime;
 
-public class NPCActionController : Action
+
+public class NPCActionController : MonoBehaviour
 {
     private NavMeshAgent agent;
-    public SharedTransform target;
+    private Vector3 sourcePoint;
 
 
-    private void Start ()
+    private void Start()
     {
-        agent = GetComponent<NavMeshAgent> ();
+        agent = GetComponent<NavMeshAgent>();
+
     }
 
-    private void Update ()
-    {
-       
-    }
-
-    public override TaskStatus OnUpdate()
+    private void Update()
     {
         if (!agent.hasPath && agent.isActiveAndEnabled)
         {
-            var point = ZoneMovementController.Instance.GetRandomPoint();
-            target.Value.position = point;
-            agent.SetDestination (point);
-            transform.LookAt(point);
+            sourcePoint = ZoneMovementController.Instance.GetRandomPoint(transform);
+            agent.SetDestination(sourcePoint);
+            transform.LookAt(sourcePoint);
+        
         }
-
-        return TaskStatus.Running;
     }
+
+  
 }

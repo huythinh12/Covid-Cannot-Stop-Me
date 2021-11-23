@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public Slider health, def;
+    // public Slider health, def;
     //show to edit 
     public int maxHealth;
     public int maxDef;
@@ -18,10 +18,10 @@ public class PlayerHealth : MonoBehaviour
     private void OnEnable()
     {
         //UI
-        health.maxValue = maxHealth;
-        health.value = maxHealth;
-        def.value = maxDef;
-        def.maxValue = maxDef;
+        // health.maxValue = maxHealth;
+        // health.value = maxHealth;
+        // def.value = maxDef;
+        // def.maxValue = maxDef;
 
         currentHealth = maxHealth;
         currentDef = maxDef;
@@ -39,14 +39,14 @@ public class PlayerHealth : MonoBehaviour
             if (currentDef > 0)
             {
                 currentDef--;
-                def.value = currentDef;
+                // def.value = currentDef;
             }
             else
             {
                 if (currentHealth > 0)
                 {
                     currentHealth--;
-                    health.value = currentHealth;
+                    // health.value = currentHealth;
                 }
                 else
                 {

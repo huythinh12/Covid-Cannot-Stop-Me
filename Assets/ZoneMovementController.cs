@@ -3,7 +3,6 @@ using UnityEngine.AI;
 public class ZoneMovementController : MonoBehaviour
 {
     public static ZoneMovementController Instance;
-    public Transform pointRandom;
     public float Range;
 
     private void Awake()
@@ -25,18 +24,17 @@ public class ZoneMovementController : MonoBehaviour
 
         return false;
     }
-    public Vector3 GetRandomPoint ()
+    public Vector3 GetRandomPoint (Transform agentTransform)
     {
         Vector3 _point = Vector3.zero;
 
         if (RandomPoint (transform.position,  Range , out _point))
         {
             Debug.DrawRay (_point, Vector3.up, Color.red, 5);
-            pointRandom.position = _point;
             return _point;
         }
 
-        return _point;
+        return agentTransform.position;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos ()
