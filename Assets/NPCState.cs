@@ -1,8 +1,8 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
+[RequireComponent(typeof(NPCDetectVirus))]
+[RequireComponent(typeof(NPCDetectInZone))]
 public class NPCState : MonoBehaviour
 {
     public int currentHealth;

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class SpawnVirusController : MonoBehaviour
 {
@@ -9,10 +11,17 @@ public class SpawnVirusController : MonoBehaviour
     public GameObject virus;
     public int timeToSpawn;
     private int numberOVirus;
-    void Start()
+    private bool isTurnOn;
+    
+    private void Update()
     {
-        StartCoroutine(StartSpawn());
+        if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
+        {
+            isTurnOn = true;
+            StartCoroutine(StartSpawn());
+        }
     }
+
     IEnumerator StartSpawn()
     {
         while (true)
@@ -22,13 +31,12 @@ public class SpawnVirusController : MonoBehaviour
             {
                 var coroutineCheckNumberOfNPC = StartCoroutine(CheckNumberOfNPC());
                 yield return new WaitUntil(() => numberOVirus < maxRange);
-                print("tao con moi");
                 StopCoroutine(coroutineCheckNumberOfNPC);
             }
             else
             {
-                SetRandomSpawn();
                 yield return new WaitForSeconds(timeToSpawn);
+                SetRandomSpawn();
             }
         }
     }

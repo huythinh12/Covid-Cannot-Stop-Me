@@ -24,6 +24,7 @@ public class SupportTarget : MonoBehaviour
     IEnumerator BuffDelay(int def, int health)
     {
         yield return new WaitForSeconds(2);
+        
         if (health > 0)
         {
             OnHealing?.Invoke();

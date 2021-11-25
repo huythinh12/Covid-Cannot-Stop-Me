@@ -1,27 +1,25 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CameraTransition : MonoBehaviour
 {
-    public UnityEvent<bool> OnCameraReady;
-    private bool isGameReady;
     private bool isTurnOn;
-    private void Start()
-    {
-        OnCameraReady?.Invoke(false);
-    }
-
-    public void CameraReady()
-    {
-        OnCameraReady?.Invoke(true);
-    }
+    public Transform objectTarget;
 
     private void Update()
     {
-        if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
+        if (SceneLoadingManager.hasLoadingDone  && !isTurnOn)
         {
-            gameObject.SetActive(false);
+            var timeToReady = 3;
+            transform.DOMove(objectTarget.position,timeToReady);
+            Invoke("CameraReady",timeToReady);
             isTurnOn = true;
         }
+    }
+
+    private void CameraReady()
+    {
+        GameManager.Instance.isCameraReadyInGame = true;
+        gameObject.SetActive(false);
     }
 }

@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 public class NPCAnimationsController : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class NPCAnimationsController : MonoBehaviour
     private int isWalk;
     private int isCough;
     private int death;
+    private int isHealing;
     private NavMeshAgent agent;
 
     private float saveSpeed;
@@ -21,8 +21,30 @@ public class NPCAnimationsController : MonoBehaviour
         isWalk = Animator.StringToHash("isWalk");
         isCough = Animator.StringToHash("isCough");
         death = Animator.StringToHash("death");
+        isHealing = Animator.StringToHash("isHealing");
         agent = GetComponent<NavMeshAgent>();
         saveSpeed = agent.speed;
+    }
+
+    private void OnEnable()
+    {
+        SupportTarget.OnHealing?.AddListener(ActiveHealing);
+    }
+
+    private void ActiveHealing()
+    {
+        anim.SetBool(isHealing,true);
+        Invoke("ResetAnim",2f);
+    }
+
+    private void ResetAnim()
+    {
+        anim.SetBool(isHealing,false);
+    }
+    private void OnDisable()
+    {
+        SupportTarget.OnHealing?.RemoveListener(ActiveHealing);
+
     }
 
     // Update is called once per frame

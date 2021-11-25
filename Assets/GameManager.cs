@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -56,11 +54,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDown()
     {
-        // var cameraTransition = FindObjectOfType<CameraTransition>();
-        yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone);
-        // cameraTransition.OnCameraReady.AddListener(ReceivedCameraReadyEvent);
+        yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone); // when fadin completed
         yield return new WaitUntil(() => isCameraReadyInGame);
-
+          
         while (!isEndTime)
         {
             yield return null;
@@ -68,14 +64,8 @@ public class GameManager : MonoBehaviour
    
 
         yield return new WaitForSeconds(2);
-        // cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
         
         SceneLoadingManager.Instance.LoadLevel(0);
     }
 
-    private void ReceivedCameraReadyEvent(bool isCameraReady)
-    {
-        isCameraReadyInGame = isCameraReady;
-    }
-    
 }

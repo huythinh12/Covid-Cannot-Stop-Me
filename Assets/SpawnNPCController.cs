@@ -9,11 +9,15 @@ public class SpawnNPCController : MonoBehaviour
     public int timeToSpawn;
     private int numberOfNPC;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool isTurnOn;
+
+    private void Update()
     {
-        StartCoroutine(StartSpawn());
-        print("xin chao ");
+        if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
+        {
+            isTurnOn = true;
+            StartCoroutine(StartSpawn());
+        }
     }
     IEnumerator StartSpawn()
     {
@@ -28,8 +32,8 @@ public class SpawnNPCController : MonoBehaviour
             }
             else
             {
-                SetRandomSpawn();
                 yield return new WaitForSeconds(timeToSpawn);
+                SetRandomSpawn();
             }
         }
     }

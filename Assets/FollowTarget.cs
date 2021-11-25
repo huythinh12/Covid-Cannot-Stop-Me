@@ -2,7 +2,6 @@ using DG.Tweening;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.ProBuilder.MeshOperations;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class FollowTarget : MonoBehaviour
@@ -14,8 +13,7 @@ public class FollowTarget : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // sp1 = GameObject.FindGameObjectWithTag("FollowPointA").transform;
-        // sp2 = GameObject.FindGameObjectWithTag("FollowPointB").transform;
+ 
         agent = GetComponent<NavMeshAgent>();
     }
 

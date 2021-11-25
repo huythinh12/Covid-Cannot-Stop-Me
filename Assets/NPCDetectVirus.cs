@@ -9,7 +9,7 @@ public class NPCDetectVirus : MonoBehaviour
             var state = GetComponent<NPCState>();
 
             if (state.currentHealth > 0)
-            {
+            {//check when npc have mask
                 if (!state.isDef)
                 {
                     if (state.countInject < 2)

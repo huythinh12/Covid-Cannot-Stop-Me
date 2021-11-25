@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using BehaviorDesigner.Runtime.Tasks.Unity.Timeline;
 using UnityEngine;
 
 public class PauseGameController : MonoBehaviour

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -86,7 +83,7 @@ public class NPCDetectInZone : MonoBehaviour
             }
 
             //healing
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && state.currentHealth>0)
             {
                 state.currentHealth = state.maxHealth;
                 state.isVirusInside = false;

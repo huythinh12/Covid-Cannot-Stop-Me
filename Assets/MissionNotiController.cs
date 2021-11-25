@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MissionNotiController : MonoBehaviour
 {
-    public GameObject missionClear, gameOver;
-    
+    public GameObject completed, fail;
 
     // Update is called once per frame
     void Update()
@@ -13,9 +10,9 @@ public class MissionNotiController : MonoBehaviour
         if (GameManager.Instance != null)
         {
             if (GameManager.Instance.isWin)
-                missionClear.SetActive(true);
+                completed.SetActive(true);
             else if (GameManager.Instance.isFail)
-                gameOver.SetActive(true);
+                fail.SetActive(true);
         }
     }
 }
