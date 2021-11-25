@@ -1,12 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StayInside : MonoBehaviour {
 
-    public Transform MinimapCam;
+    private Transform minimapCam;
     public float MinimapSize;
     Vector3 TempV3;
+
+    private void Awake()
+    {
+        minimapCam = FindObjectOfType<MiniMap>().transform;
+    }
 
     void Update () {
         TempV3 = transform.parent.transform.position;
@@ -16,7 +22,7 @@ public class StayInside : MonoBehaviour {
 
     void LateUpdate () {
         // Center of Minimap
-        Vector3 centerPosition = MinimapCam.transform.localPosition;
+        Vector3 centerPosition = minimapCam.transform.localPosition;
 
         // Just to keep a distance between Minimap camera and this Object (So that camera don't clip it out)
         centerPosition.y -= 0.5f;
