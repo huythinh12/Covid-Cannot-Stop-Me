@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CanvasMainController : MonoBehaviour
@@ -5,6 +6,7 @@ public class CanvasMainController : MonoBehaviour
     public GameObject pauseGame;
     public GameObject popUpMissionContent;
     private bool isTurnOn;
+
 
     // Update is called once per frame
     void Update()

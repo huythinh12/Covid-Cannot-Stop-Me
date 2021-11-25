@@ -8,17 +8,19 @@ public class SpawnNPCController : MonoBehaviour
     public GameObject[] npc;
     public int timeToSpawn;
     private int numberOfNPC;
-
+    private int numberID;
     private bool isTurnOn;
 
     private void Update()
     {
-        if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
-        {
-            isTurnOn = true;
-            StartCoroutine(StartSpawn());
-        }
+        if (GameManager.Instance != null)
+            if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
+            {
+                isTurnOn = true;
+                StartCoroutine(StartSpawn());
+            }
     }
+
     IEnumerator StartSpawn()
     {
         while (true)
@@ -51,6 +53,9 @@ public class SpawnNPCController : MonoBehaviour
     {
         var indexPoint = Random.Range(0, pointsToSpawn.Length);
         var indexRandomNpc = Random.Range(0, npc.Length);
-        Instantiate(npc[indexRandomNpc], pointsToSpawn[indexPoint].transform.position, Quaternion.identity,pointsToSpawn[indexPoint].transform.parent);
+        var newNPc = Instantiate(npc[indexRandomNpc], pointsToSpawn[indexPoint].transform.position, Quaternion.identity,
+            pointsToSpawn[indexPoint].transform.parent);
+        numberID++;
+        newNPc.transform.GetChild(0).name =  newNPc.transform.GetChild(0).name + numberID;
     }
 }

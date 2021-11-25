@@ -15,8 +15,6 @@ public class VirusActiveController : MonoBehaviour
     public Texture m_MainTexture;
     public bool isActiveVirus;
 
-    //demo 
-    public Text txt;
     private Renderer m_Renderer;
     private Animator anim;
     private BehaviorTree behaviorTree;
@@ -42,19 +40,17 @@ public class VirusActiveController : MonoBehaviour
     {
         while (timeActive >= 0)
         {
-            if (txt != null)
-                txt.text = timeActive.ToString();
             timeActive--;
             yield return new WaitForSeconds(1);
         }
 
         float timeAction = 2;
-        bodyRoot.DOMoveY(posYBodyOrigin, timeAction);
+        bodyRoot?.DOMoveY(posYBodyOrigin, timeAction);
 
         yield return new WaitForSeconds(timeAction);
         var particle = Instantiate(particleActive, transform.position + new Vector3(0, 2, 0), Quaternion.identity);
-
         yield return null;
+        transform.GetChild(1).gameObject.SetActive(true);
         if (!GetComponent<VirusDetectCollider>().isDestroyUnActiveVirus)
         {
             isActiveVirus = true;

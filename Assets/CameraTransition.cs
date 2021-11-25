@@ -8,11 +8,12 @@ public class CameraTransition : MonoBehaviour
 
     private void Update()
     {
-        if (SceneLoadingManager.hasLoadingDone  && !isTurnOn)
+        if (SceneLoadingManager.hasLoadingDone && !isTurnOn)
         {
             var timeToReady = 3;
-            transform.DOMove(objectTarget.position,timeToReady);
-            Invoke("CameraReady",timeToReady);
+            if (transform != null)
+                transform.DOMove(objectTarget.position, timeToReady);
+            Invoke("CameraReady", timeToReady);
             isTurnOn = true;
         }
     }

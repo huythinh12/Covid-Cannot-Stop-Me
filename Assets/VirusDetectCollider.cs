@@ -27,8 +27,12 @@ public class VirusDetectCollider : MonoBehaviour
 
     private void Injection(Transform target)
     {
-        transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.Linear);
-        transform.DOMove(target.position, 0.3f);
+        if (transform != null)
+        {
+            transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.Linear);
+            transform.DOMove(target.position, 0.3f);
+        }
+      
     }
 
 
@@ -36,6 +40,12 @@ public class VirusDetectCollider : MonoBehaviour
     {
         if (other.collider.CompareTag("Player")||other.collider.CompareTag("NPC"))
         {
+            //mission 1 
+            if (!GameManager.Instance.listInfected.Contains(other.collider.name))
+            {
+                GameManager.Instance.listInfected.Add(other.collider.name);
+            }
+            
             GetComponent<SphereCollider>().isTrigger = true;
             if (!isTurnOn)
             {

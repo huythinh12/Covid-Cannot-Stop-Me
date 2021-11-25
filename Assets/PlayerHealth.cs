@@ -33,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
             def.value = maxDef;
             def.maxValue = maxDef;
         }
+        isEmptyHP = false;
         currentHealth = maxHealth;
         currentDef = maxDef;
     }

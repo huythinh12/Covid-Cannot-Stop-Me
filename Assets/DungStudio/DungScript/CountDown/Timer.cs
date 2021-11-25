@@ -86,7 +86,7 @@ public class Timer : MonoBehaviour
 
     private IEnumerator UpdateTimer()
     {
-        while(remainingDuration > 0)
+        while(remainingDuration > 0 && !GameManager.Instance.isEndTime)
         {
             if (!IsPause)
             {

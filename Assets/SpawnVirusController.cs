@@ -12,14 +12,15 @@ public class SpawnVirusController : MonoBehaviour
     public int timeToSpawn;
     private int numberOVirus;
     private bool isTurnOn;
-    
+
     private void Update()
     {
-        if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
-        {
-            isTurnOn = true;
-            StartCoroutine(StartSpawn());
-        }
+        if (GameManager.Instance != null)
+            if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
+            {
+                isTurnOn = true;
+                StartCoroutine(StartSpawn());
+            }
     }
 
     IEnumerator StartSpawn()
@@ -53,7 +54,8 @@ public class SpawnVirusController : MonoBehaviour
     private void SetRandomSpawn()
     {
         var indexPoint = Random.Range(0, pointsToSpawn.Length);
-        var newPos = pointsToSpawn[indexPoint].transform.position + Vector3.right * Random.Range(-4,5) + Vector3.forward * Random.Range(-4,5);
-        Instantiate(virus,newPos , Quaternion.identity);
+        var newPos = pointsToSpawn[indexPoint].transform.position + Vector3.right * Random.Range(-4, 5) +
+                     Vector3.forward * Random.Range(-4, 5);
+        Instantiate(virus, newPos, Quaternion.identity);
     }
 }
