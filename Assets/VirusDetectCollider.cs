@@ -3,6 +3,7 @@ using DG.Tweening;
 using BehaviorDesigner.Runtime;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(300)]
 public class VirusDetectCollider : MonoBehaviour
@@ -32,20 +33,19 @@ public class VirusDetectCollider : MonoBehaviour
             transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.Linear);
             transform.DOMove(target.position, 0.3f);
         }
-      
     }
 
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.CompareTag("Player")||other.collider.CompareTag("NPC"))
+        if (other.collider.CompareTag("Player") || other.collider.CompareTag("NPC"))
         {
-            //mission 1 
+            //count virus infected
             if (!GameManager.Instance.listInfected.Contains(other.collider.name))
             {
                 GameManager.Instance.listInfected.Add(other.collider.name);
             }
-            
+
             GetComponent<SphereCollider>().isTrigger = true;
             if (!isTurnOn)
             {
@@ -56,6 +56,8 @@ public class VirusDetectCollider : MonoBehaviour
         }
         else if (other.collider.CompareTag("Bullet"))
         {
+            if (SceneManager.GetActiveScene().buildIndex == 4)
+                VirusDefeatNumber.virusNumberDefeat++;
             if (!GetComponent<VirusActiveController>().isActiveVirus)
             {
                 var dissolveOver = GetComponent<U10PS_DissolveOverTime>();

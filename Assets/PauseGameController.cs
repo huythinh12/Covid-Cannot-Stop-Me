@@ -10,7 +10,8 @@ public class PauseGameController : MonoBehaviour
 
     public void Continue()
     {
-        isClickedContinue = true;
+        //isClickedContinue = true;
+        Time.timeScale = 1;
         CinemachineManager.isStopCameraThird = false;
     }
 }

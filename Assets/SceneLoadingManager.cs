@@ -54,7 +54,7 @@ public class SceneLoadingManager : MonoBehaviour
  
         Time.timeScale = 1;
         isGameReady = false;
-        GameManager.Instance.isTurnOn = false;
+        GameManager.isTurnOn = false;
         cacheIndex = Index;
         if (Index != 1)
         {

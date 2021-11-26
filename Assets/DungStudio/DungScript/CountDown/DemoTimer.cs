@@ -36,9 +36,9 @@ public class DemoTimer : MonoBehaviour
 
     private void PauseGame()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || PauseGameController.isClickedContinue)
+        if (Input.GetKeyDown(KeyCode.Escape) /*|| PauseGameController.isClickedContinue*/)
         {
-            PauseGameController.isClickedContinue = false;
+            //PauseGameController.isClickedContinue = false;
             ClockTimer.SetPause(!ClockTimer.IsPause);
         }
     }

@@ -15,6 +15,8 @@ public class AnimationsEvent : MonoBehaviour
     public void ThrowBall()
     {
         var ballScript = FindObjectOfType<Bullet>();
+        ballScript.GetComponent<SphereCollider>().isTrigger = false;
         ballScript.ReleaseMe();
+        
     }
 }

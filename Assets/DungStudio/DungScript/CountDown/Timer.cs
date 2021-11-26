@@ -88,7 +88,7 @@ public class Timer : MonoBehaviour
     {
         while(remainingDuration > 0 && !GameManager.Instance.isEndTime)
         {
-            if (!IsPause)
+            if (!IsPause && GameManager.Instance.isWin)
             {
                 if (onTimerChangeAction != null)
                     onTimerChangeAction.Invoke(remainingDuration);

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class NPCDetectVirus : MonoBehaviour
 {
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.collider.CompareTag("Virus"))
@@ -25,6 +26,7 @@ public class NPCDetectVirus : MonoBehaviour
                         }
                         else 
                         {
+                            state.isVirusInside = true;
                             state.currentHealth--;
                         }  
                     }

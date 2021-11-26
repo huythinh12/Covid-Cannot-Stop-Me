@@ -51,12 +51,6 @@ public class PlayerHealth : MonoBehaviour
             SupportTarget.OnHealing?.RemoveListener(GetHealing);
             SupportTargetDef.OnBuffDef?.RemoveListener(GetDef);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentHealth--;
-            health.value = currentHealth;
-            OnGetHit?.Invoke(currentDef, currentHealth);
-        }
     }
 
     private void OnCollisionEnter(Collision other)

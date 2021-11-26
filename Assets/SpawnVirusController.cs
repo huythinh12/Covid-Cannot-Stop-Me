@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class SpawnVirusController : MonoBehaviour
 {
     public Transform[] pointsToSpawn;
     public int maxRange;
-    public GameObject virus;
+    public GameObject[] virus;
     public int timeToSpawn;
     private int numberOVirus;
     private bool isTurnOn;
@@ -54,8 +55,17 @@ public class SpawnVirusController : MonoBehaviour
     private void SetRandomSpawn()
     {
         var indexPoint = Random.Range(0, pointsToSpawn.Length);
+        var indexVirus = Random.Range(0, virus.Length);
         var newPos = pointsToSpawn[indexPoint].transform.position + Vector3.right * Random.Range(-4, 5) +
                      Vector3.forward * Random.Range(-4, 5);
-        Instantiate(virus, newPos, Quaternion.identity);
+        
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            Instantiate(virus[indexVirus], newPos, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(virus[0], newPos, Quaternion.identity);
+        }
     }
 }

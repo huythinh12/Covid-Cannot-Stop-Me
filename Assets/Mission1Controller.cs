@@ -11,14 +11,20 @@ public class Mission1Controller : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            if(PlayerHealth.isEmptyHP)
+            if(PlayerHealth.isEmptyHP )
             {
                 GameManager.Instance.isEndTime = true;
                 GameManager.Instance.isFail = true;
             }
-            if (GameManager.Instance.isEndTime && GameManager.Instance.listInfected.Count >= 5)
+            else if (GameManager.Instance.isEndTime && GameManager.Instance.listInfected.Count > 5)
             {
                 GameManager.Instance.isFail = true;
+                GameManager.Instance.isEndTime = true;
+            }
+            else if (GameManager.Instance.isEndTime && GameManager.Instance.listInfected.Count <= 5)
+            {
+                GameManager.Instance.isWin = true;
+                GameManager.Instance.isEndTime = true;
             }
         }
     }

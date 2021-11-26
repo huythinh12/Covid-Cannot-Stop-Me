@@ -22,7 +22,8 @@ public class FollowTarget : MonoBehaviour
     {
         if (!agent.hasPath)
         {
-            agent.SetDestination(FindObjectOfType<PlayerMovementController>().transform.position);
+            var playerPos = FindObjectOfType<PlayerMovementController>();
+            agent.SetDestination(playerPos.transform.position);
         }
 
         if (agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)

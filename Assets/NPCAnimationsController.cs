@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,23 +8,22 @@ public class NPCAnimationsController : MonoBehaviour
 {
     private Animator anim;
     private int isWalk;
+    private int isRun;
     private int isCough;
     private int death;
     private int isHealing;
     private NavMeshAgent agent;
 
-    private float saveSpeed;
-
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        isRun = Animator.StringToHash("isRun");
         isWalk = Animator.StringToHash("isWalk");
         isCough = Animator.StringToHash("isCough");
         death = Animator.StringToHash("death");
         isHealing = Animator.StringToHash("isHealing");
         agent = GetComponent<NavMeshAgent>();
-        saveSpeed = agent.speed;
     }
 
     private void OnEnable()
@@ -33,18 +33,18 @@ public class NPCAnimationsController : MonoBehaviour
 
     private void ActiveHealing()
     {
-        anim.SetBool(isHealing,true);
-        Invoke("ResetAnim",2f);
+        anim.SetBool(isHealing, true);
+        Invoke("ResetAnim", 2.5f);
     }
 
     private void ResetAnim()
     {
-        anim.SetBool(isHealing,false);
+        anim.SetBool(isHealing, false);
     }
+
     private void OnDisable()
     {
         SupportTarget.OnHealing?.RemoveListener(ActiveHealing);
-
     }
 
     // Update is called once per frame
@@ -62,23 +62,45 @@ public class NPCAnimationsController : MonoBehaviour
             if (state.isVirusInside)
             {
                 anim.SetBool(isCough, true);
-                agent.speed = 2;
             }
             else
             {
                 anim.SetBool(isCough, false);
-                agent.speed = saveSpeed;
             }
-        }
 
-
-        if (IsAgentMove())
-        {
-            anim.SetBool(isWalk, true);
+            if (IsAgentMove())
+            {
+                anim.SetBool(isWalk, true);
+            }
+            else
+            {
+                anim.SetBool(isWalk, false);
+            }
         }
         else
         {
-            anim.SetBool(isWalk, false);
+            //animation for ally
+            if (transform.CompareTag("Ally"))
+            {
+                if (IsAgentMove())
+                {
+                    if (PlayerMovementController.isRunning)
+                    {
+                        anim.SetBool(isRun, true);
+                        anim.SetBool(isWalk, false);
+                    }
+                    else if (PlayerMovementController.isMove)
+                    {
+                        anim.SetBool(isRun, false);
+                        anim.SetBool(isWalk, true);
+                    }
+                }
+                else
+                {
+                    anim.SetBool(isRun, false);
+                    anim.SetBool(isWalk, false);
+                }
+            }
         }
     }
 
