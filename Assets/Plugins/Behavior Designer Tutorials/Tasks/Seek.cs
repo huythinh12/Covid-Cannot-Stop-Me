@@ -1,6 +1,4 @@
-﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
-using TreeEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks.Tutorials
 {
@@ -118,7 +116,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
 
             if (isColliderHuman && behaviorTree)
             {
-                behaviorTree.SendEvent<Transform>("CatchedPlayer",target.Value);
                 return false;
             }
             return remainingDistance <= arriveDistance;
@@ -159,7 +156,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Tutorials
         public override void OnCollisionEnter(Collision collision)
         {
             base.OnCollisionEnter(collision);
-            if (collision.collider.CompareTag("Player"))
+            if (collision.collider.CompareTag("Player") || collision.collider.CompareTag("NPC"))
             {
                 isColliderHuman = true;
             }

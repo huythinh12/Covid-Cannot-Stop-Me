@@ -20,9 +20,11 @@ namespace Player
         public static bool onGrounded;
         public static bool isAiming;
         public static bool hasKeyJump;
+        public static bool isRunning;
+        public static bool isMove;
         public GameObject followTarget;
         public Quaternion nextRotation;
-
+        
         private Rigidbody rbPlayer;
         private float rotationPower = 3f;
         private float rotationSmoothToLerp = 0.2f;
@@ -94,8 +96,10 @@ namespace Player
                 transform.position += playerMovementDirection * speed * Time.deltaTime;
 
                 //check to running
-                if (Input.GetKey(KeyCode.LeftShift) && !isAiming && onGrounded)
+                if (Input.GetKey(KeyCode.LeftShift) && onGrounded)
                 {
+                    isRunning = true;
+                    isMove = false;
                     dirtyParticleFoot.SetActive(true);
                     //pending
                     // if (Input.GetKeyDown(KeyCode.Space) && onGrounded) // check when running to jump 
@@ -108,6 +112,8 @@ namespace Player
                 }
                 else
                 {
+                    isMove = true;
+                    isRunning = false;
                     dirtyParticleFoot.SetActive(false);
                 }
             }

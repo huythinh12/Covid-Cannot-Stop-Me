@@ -5,23 +5,17 @@ using UnityEngine;
 
 public class DestroyParticle : MonoBehaviour
 {
-
-    private float timeFollow = 2f;
-    
-
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (other.CompareTag("Player"))
-        {
-            transform.parent = other.transform.parent;
-            Invoke("StopEffect",timeFollow);
-        }
+        Invoke("StopEffect",3f);
     }
+
+ 
 
     private void StopEffect()
     {
         GetComponent<ParticleSystem>().Stop();
-        Destroy(gameObject, timeFollow);
+        Destroy(gameObject);
 
     }
 }

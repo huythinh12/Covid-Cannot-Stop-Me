@@ -84,9 +84,9 @@ namespace Player
             // get action input
             bool forwardPressed = Input.GetKey("w") || Input.GetKey("s") || Input.GetKey("a") || Input.GetKey("d");
             bool runPressed = Input.GetKey("left shift");
-            bool jumpPressed = Input.GetKey("space");
+            // bool jumpPressed = Input.GetKey("space");
             // set aniamtion for action
-            playerAnimator.SetBool(isJumpingHash, jumpPressed);
+            // playerAnimator.SetBool(isJumpingHash, jumpPressed);
             // running animation base on conditional
             if (forwardPressed && runPressed) { playerAnimator.SetBool(isRunningHash, true); }
             else

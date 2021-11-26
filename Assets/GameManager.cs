@@ -1,22 +1,21 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public bool isClearAllStage;
+    public List<string> listInfected = new List<string>() ;
     public float timer;
     public bool isWin;
     public bool isFail;
     public bool isCameraReadyInGame;
-    public float timeToReady;
     public float timeCountDown;
     public bool isEndTime;
-    public bool isAllEnemyDefeatLV1;
-    private bool isTurnOn;
+    public static bool isTurnOn;
     private float saveTimerPersistance;
     private Stopwatch loadTimer;
 
@@ -41,8 +40,32 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //test fail
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            isFail = true;
+        }
+        //test win
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            isWin = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Mission2Controller.numberVaccineInTown = 5;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Mission3Controller.numberVirusDefeat = 5;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Mission4Controller.isBossDead = true;
+        }
+        
         if (SceneManager.GetActiveScene().buildIndex > 1 && !isTurnOn)
         {
+            print("reset gia tri ne");
             //default settup when game begin
             isWin = false;
             isFail = false;
@@ -56,26 +79,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDown()
     {
-        // var cameraTransition = FindObjectOfType<CameraTransition>();
-        yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone);
-        // cameraTransition.OnCameraReady.AddListener(ReceivedCameraReadyEvent);
+        yield return new WaitUntil(() => SceneLoadingManager.hasLoadingDone); // when fadin completed
         yield return new WaitUntil(() => isCameraReadyInGame);
+        yield return new WaitUntil(() => isWin);
 
-        while (!isEndTime)
+        if (isWin)
         {
-            yield return null;
+            yield return new WaitForSeconds(3.5f);
+            SceneLoadingManager.Instance.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
         }
-   
-
-        yield return new WaitForSeconds(2);
-        // cameraTransition.OnCameraReady.RemoveListener(ReceivedCameraReadyEvent);
-        
-        SceneLoadingManager.Instance.LoadLevel(0);
     }
-
-    private void ReceivedCameraReadyEvent(bool isCameraReady)
-    {
-        isCameraReadyInGame = isCameraReady;
-    }
-    
 }

@@ -163,16 +163,11 @@ namespace Player
         private bool CheckAnimtionDeath()
         {
             //dead
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (PlayerHealth.isEmptyHP)
             {
                 anim.SetTrigger(death);
                 anim.SetLayerWeight(layerIndexDeath,1);
                 return true;
-            }//live
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                anim.SetLayerWeight(layerIndexDeath,0);
-                return false;
             }
             return false;
         }
