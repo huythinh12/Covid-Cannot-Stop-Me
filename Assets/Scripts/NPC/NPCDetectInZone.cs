@@ -179,11 +179,12 @@ public class NPCDetectInZone : MonoBehaviour
                     }
                 }
                 //refresh after virus inject 
-                if (Input.GetKeyDown(KeyCode.F) && state.currentHealth > 0)
+                if (Input.GetKeyDown(KeyCode.F) && state.currentHealth > 0 && state.currentHealth <2)
                 {
                     effectRefresh.Play();
                     state.currentHealth = state.maxHealth;
                     state.isVirusInside = false;
+                    GameManager.Instance.countOfHeal++;
                 }
             }
         }

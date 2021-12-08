@@ -49,6 +49,7 @@ public class NPCState : MonoBehaviour
         if (currentHealth <= 0 && !isTurnOn)
         {
             isTurnOn = true;
+            GameManager.Instance.countOfDead++;
             UnactiveComponent();
             Destroy(gameObject, 3);
         }

@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //test fail
         if (Input.GetKeyDown(KeyCode.R))
         {
