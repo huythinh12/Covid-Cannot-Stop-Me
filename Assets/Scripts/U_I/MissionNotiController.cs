@@ -10,10 +10,13 @@ public class MissionNotiController : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            if (GameManager.Instance.isClearAllStage)
-                completed.SetActive(true);
-            else if (GameManager.Instance.isFail && !isTurnOn)
+            // if (GameManager.Instance.isClearAllStage)
+            //     completed.SetActive(true);
+            // else 
+            if (GameManager.Instance.isFail && !isTurnOn)
             {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 isTurnOn = true;
                 fail.SetActive(true);
                 Time.timeScale = 0;

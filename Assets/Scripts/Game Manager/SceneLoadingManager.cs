@@ -82,40 +82,46 @@ public class SceneLoadingManager : MonoBehaviour
     {
         hasLoadingDone = false;
         //sử dụng để cộng thêm tg mặc định nếu cần
-        // loadTimer = new Stopwatch();
-        // loadTimer.Start();
-        // var loadTimeEnd = Random.Range(minimumLoadTime, maximumLoadTime);
-        // float percentLoaded = 0;
-        // while (loadTimer.Elapsed.TotalSeconds <= loadTimeEnd)
-        // {
-        //     percentLoaded = (float) (loadTimer.Elapsed.TotalSeconds / loadTimeEnd);
-        //     slider.value = percentLoaded;
-        //     loadingText.text = string.Format("{0:P0}", percentLoaded);
-        //
-        //     yield return null;
-        // }
-        // loadTimer.Stop();
-        // OnEventFadeIn?.Invoke(false);
-        // yield return new WaitForSeconds(timeToCrossFade);
-        //
-        // AsyncOperation operationz = SceneManager.LoadSceneAsync(sceneIndex);
-        // yield return new WaitUntil(() => operationz.isDone);
-        
-        // async loading screen 
-        AsyncOperation operationz = SceneManager.LoadSceneAsync(sceneIndex);
-        while (!operationz.isDone)
+        if (sceneIndex == 0 || sceneIndex == 6)
         {
-            float process = Mathf.Clamp01(operationz.progress / 0.9f);
-            slider.value = process;
-            loadingText.text =   string.Format("{0:P0}", process);
-            if ((process * 100f) == 100f)
+            loadTimer = new Stopwatch();
+            loadTimer.Start();
+            var loadTimeEnd = Random.Range(minimumLoadTime, maximumLoadTime);
+            float percentLoaded = 0;
+            while (loadTimer.Elapsed.TotalSeconds <= loadTimeEnd)
             {
-                OnEventFadeIn?.Invoke(false);
+                percentLoaded = (float) (loadTimer.Elapsed.TotalSeconds / loadTimeEnd);
+                slider.value = percentLoaded;
+                loadingText.text = string.Format("{0:P0}", percentLoaded);
+        
+                yield return null;
             }
-            yield return null;
+            loadTimer.Stop();
+            OnEventFadeIn?.Invoke(false);
+            yield return new WaitForSeconds(timeToCrossFade);
+            SceneManager.LoadScene(sceneIndex);
+            OnEventFadeIn?.Invoke(true);
         }
-        isGameReady = true;
-        yield return new WaitUntil(() => SceneManager.GetActiveScene().buildIndex>1);
-        OnEventFadeIn?.Invoke(true);
+        else
+        {
+            // async loading screen 
+            AsyncOperation operationz = SceneManager.LoadSceneAsync(sceneIndex);
+            while (!operationz.isDone)
+            {
+                float process = Mathf.Clamp01(operationz.progress / 0.9f);
+                slider.value = process;
+                loadingText.text =   string.Format("{0:P0}", process);
+                if ((process * 100f) == 100f)
+                {
+                    OnEventFadeIn?.Invoke(false);
+                }
+                yield return null;
+            }
+            isGameReady = true;
+            yield return new WaitUntil(() => SceneManager.GetActiveScene().buildIndex>1);
+            OnEventFadeIn?.Invoke(true);
+        }
+
+     
     }
 }

@@ -74,6 +74,7 @@ public class SpawnNPCController : MonoBehaviour
                     if (mainBody.transform.parent.parent.name.Contains("PointAlly"))
                     {
                         //set default when npc ally spawn 
+                         mainBody.name = "Standing";
                         mainBody.gameObject.layer = LayerMask.NameToLayer("Default");
                         mainBody.transform.GetChild(0).gameObject.SetActive(false);
                         mainBody.transform.GetChild(1).gameObject.SetActive(true);

@@ -36,6 +36,7 @@ public class NPCState : MonoBehaviour
         if (isAlly && !isTurnOn2)
         {
             isTurnOn2 = true;
+            transform.name = "Ally";
             transform.tag = "Ally";
             transform.parent.parent = null;
             GetComponent<FollowTarget>().enabled = true;

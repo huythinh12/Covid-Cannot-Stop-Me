@@ -7,8 +7,13 @@ public class CompletedButton : MonoBehaviour
       SceneLoadingManager.Instance.LoadLevel( 0);
       if (GameManager.Instance != null)
       {
-         GameManager.Instance.countOfDead = 0;
-         GameManager.Instance.countOfHeal = 0;
+       Invoke("SetDefaultResultDelay",3f);
       }
+   }
+
+   private void SetDefaultResultDelay()
+   {
+      GameManager.Instance.countOfDead = 0;
+      GameManager.Instance.countOfHeal = 0;
    }
 }

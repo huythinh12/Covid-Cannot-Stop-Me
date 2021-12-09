@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class CameraTransition : MonoBehaviour
 {
-    private bool isTurnOn;
+    private bool isTurnOn,isTurnOn2;
+    public GameObject cameraThird;
     public Transform objectTarget;
 
     private void Update()
     {
         if (SceneLoadingManager.hasLoadingDone && !isTurnOn)
         {
+            cameraThird.SetActive(false);
+            gameObject.SetActive(true);
             var timeToReady = 3;
             if (transform != null)
                 transform.DOMove(objectTarget.position, timeToReady);

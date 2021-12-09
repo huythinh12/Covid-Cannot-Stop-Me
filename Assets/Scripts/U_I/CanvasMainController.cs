@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,18 +9,19 @@ public class CanvasMainController : MonoBehaviour
     public GameObject popUpMissionContent;
     private bool isTurnOn;
     private bool isTurnOn2;
-    
+
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.isCameraReadyInGame&&!isTurnOn && SceneManager.GetActiveScene().buildIndex !=5)
+        if (GameManager.Instance != null && GameManager.Instance.isCameraReadyInGame && !isTurnOn &&
+            SceneManager.GetActiveScene().buildIndex != 5)
         {
             isTurnOn = true;
             popUpMissionContent.SetActive(true);
         }
 
-        if (GameManager.Instance.isWin &&!isTurnOn2 && SceneManager.GetActiveScene().buildIndex !=5)
+        if (GameManager.Instance.isWin && !isTurnOn2 && SceneManager.GetActiveScene().buildIndex != 5)
         {
             isTurnOn2 = true;
             popUpMissionContent.SetActive(!popUpMissionContent.activeInHierarchy);
@@ -35,15 +35,14 @@ public class CanvasMainController : MonoBehaviour
             }
         }
 
-   
-        
-        if (!pauseGame.activeInHierarchy && !settingGame.activeInHierarchy)
+
+        if (!pauseGame.activeInHierarchy && !settingGame.activeInHierarchy && !GameManager.Instance.isFail)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !GameManager.Instance.isFail)
         {
             CinemachineManager.isStopCameraThird = true;
             pauseGame.SetActive(!pauseGame.activeInHierarchy);
@@ -59,6 +58,5 @@ public class CanvasMainController : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-       
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DemoTimer : MonoBehaviour
@@ -37,9 +35,8 @@ public class DemoTimer : MonoBehaviour
 
     private void PauseGame()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) /*|| PauseGameController.isClickedContinue*/)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            //PauseGameController.isClickedContinue = false;
             ClockTimer.SetPause(!ClockTimer.IsPause);
         }
     }

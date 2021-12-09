@@ -118,12 +118,12 @@ public class NPCDetectInZone : MonoBehaviour
 
             if (other.CompareTag("ZoneToCastSkill"))
             {
+                notiInzone.SetActive(true);
                 //mission 2
                 if (SceneManager.GetActiveScene().buildIndex == 3)
                 {
                     if (!Input.GetMouseButton(0))
                     {
-                        notiInzone.SetActive(true);
                         warning.SetActive(false);
                         shield1.gameObject.SetActive(false);
                         shield2.gameObject.SetActive(false);
@@ -158,7 +158,7 @@ public class NPCDetectInZone : MonoBehaviour
                 else if (SceneManager.GetActiveScene().buildIndex == 4)
                 {
                     //do something
-                    if (!state.isAlly)
+                    if (!state.isAlly && transform.name.Contains("Standing"))
                     {
                         if (!Input.GetMouseButton(0))
                         {

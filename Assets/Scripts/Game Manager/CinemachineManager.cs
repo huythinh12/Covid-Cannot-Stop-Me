@@ -5,12 +5,18 @@ public class CinemachineManager : MonoBehaviour
     public GameObject cameraThird;
     public GameObject cameraMain;
     public static bool isStopCameraThird;
-    private bool isTurnOn;
+    private bool isTurnOn, isTurnOn2;
 
     private void Update()
     {
         if (GameManager.Instance != null)
         {
+            if (!isTurnOn2)
+            {
+                isTurnOn2 = true;
+                isStopCameraThird = false;
+            }
+
             if (GameManager.Instance.isCameraReadyInGame && !isTurnOn)
             {
                 cameraThird.SetActive(true);
@@ -27,6 +33,5 @@ public class CinemachineManager : MonoBehaviour
         {
             cameraThird.SetActive(true);
         }
-          
     }
 }

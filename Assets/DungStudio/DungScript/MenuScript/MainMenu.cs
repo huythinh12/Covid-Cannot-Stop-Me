@@ -7,7 +7,7 @@ namespace Menu
         public void StartGame()
         {
             SceneLoadingManager.Instance.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
-           //SceneLoadingManager.Instance.LoadLevel(5);
+           //SceneLoadingManager.Instance.LoadLevel(6);
         }
 
    
