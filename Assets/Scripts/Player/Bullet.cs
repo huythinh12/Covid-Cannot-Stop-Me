@@ -1,7 +1,4 @@
-using System;
-using System.Security.Cryptography;
 using Player;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -27,9 +24,10 @@ public class Bullet : MonoBehaviour
     {
         transform.parent = null;
         rbBall.useGravity = true;
+        GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
         transform.rotation = throwPoint.transform.rotation;
         rbBall.AddForce(AimController.aimDir * throwForce, ForceMode.Impulse);
-        Invoke("RemoveDelay",5);
+        Invoke("RemoveDelay",3);
     }
 
     private void RemoveDelay()

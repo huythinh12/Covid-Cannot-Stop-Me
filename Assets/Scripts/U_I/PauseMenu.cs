@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +7,7 @@ namespace Menu
     {
         [SerializeField]
         private GameObject pauseGameUI;
-        private static bool GameIsPaused = false;
+        public static bool GameIsPaused;
 
         // Update is called once per frame
         void Update()

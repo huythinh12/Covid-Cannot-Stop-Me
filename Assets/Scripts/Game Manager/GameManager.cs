@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex > 1 && !isTurnOn)
         {
+            listInfected.Clear(); // => Mission 1
             Mission2Controller.numberVaccineInTown = 0;
             Mission3Controller.numberVirusDefeat = 0;
             Mission4Controller.isBossDead = false;

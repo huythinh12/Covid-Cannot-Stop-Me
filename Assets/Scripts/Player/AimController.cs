@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using Player;
 using UnityEngine;
 
 namespace Player
@@ -42,20 +39,14 @@ namespace Player
                 {
                
                     camThird.SetActive(!camThird.activeInHierarchy);
-                    StartCoroutine(DelayToActive(3));
+                    camAim.SetActive(false);
                 }
                 else
                 {
+                    camThird.SetActive(false);
                     camAim.SetActive(!camAim.activeInHierarchy);
-                    StartCoroutine(DelayToActive(3));
                 }
             }
-        }
-
-        IEnumerator DelayToActive(float second)
-        {
-            yield return new WaitForSeconds(second);
-            camAim.transform.GetChild(1).gameObject.SetActive(camAim.activeInHierarchy);
         }
 
         private void GetAimDir()

@@ -44,7 +44,6 @@ public class CanvasMainController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) && !GameManager.Instance.isFail)
         {
-            CinemachineManager.isStopCameraThird = true;
             pauseGame.SetActive(!pauseGame.activeInHierarchy);
             if (pauseGame.activeInHierarchy)
             {
@@ -54,7 +53,6 @@ public class CanvasMainController : MonoBehaviour
             }
             else
             {
-                CinemachineManager.isStopCameraThird = false;
                 Time.timeScale = 1;
             }
         }

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Menu;
 public class DemoTimer : MonoBehaviour
 {
     [SerializeField] private Timer ClockTimer;
@@ -35,9 +35,13 @@ public class DemoTimer : MonoBehaviour
 
     private void PauseGame()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) )
         {
             ClockTimer.SetPause(!ClockTimer.IsPause);
+        }
+        else if (!PauseMenu.GameIsPaused)
+        {
+            ClockTimer.SetPause(false);
         }
     }
 }

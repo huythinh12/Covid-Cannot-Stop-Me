@@ -11,7 +11,6 @@ public class CameraTransition : MonoBehaviour
     {
         if (SceneLoadingManager.hasLoadingDone && !isTurnOn)
         {
-            cameraThird.SetActive(false);
             gameObject.SetActive(true);
             var timeToReady = 3;
             if (transform != null)
