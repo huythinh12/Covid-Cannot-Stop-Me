@@ -43,32 +43,32 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //test fail
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            isFail = true;
-        }
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     isFail = true;
+        // }
 
         //test win
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            isEndTime = true;
-            listInfected.Clear();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Mission2Controller.numberVaccineInTown = 5;
-        
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Mission3Controller.numberVirusDefeat = 5;
-          
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Mission4Controller.isBossDead = true;
-         
-        }
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     isEndTime = true;
+        //     listInfected.Clear();
+        // }
+        // if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     Mission2Controller.numberVaccineInTown = 5;
+        //
+        // }
+        // if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     Mission3Controller.numberVirusDefeat = 5;
+        //   
+        // }
+        // if (Input.GetKeyDown(KeyCode.Alpha4))
+        // {
+        //     Mission4Controller.isBossDead = true;
+        //  
+        // }
         
         //set cursor mouse default
         if (SceneManager.GetActiveScene().buildIndex == 6 || SceneManager.GetActiveScene().buildIndex == 0)
