@@ -6,14 +6,12 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class FollowTarget : MonoBehaviour
 {
-    
     private NavMeshAgent agent;
     private float offsetDistance = 3f;
 
     // Start is called before the first frame update
     void Start()
     {
-            print("bat dau follow target");
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = 2f;
     }
@@ -21,16 +19,19 @@ public class FollowTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!agent.hasPath)
+        if (agent.isActiveAndEnabled)
         {
-            var playerPos = FindObjectOfType<PlayerMovementController>();
-            agent.SetDestination(playerPos.transform.position);
-        }
+            if (!agent.hasPath)
+            {
+                var playerPos = FindObjectOfType<PlayerMovementController>();
+                agent.SetDestination(playerPos.transform.position);
+            }
 
-        if (agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            agent.SetDestination(transform.position);
-            Invoke("RotateDelay",1f);
+            if (agent.hasPath && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                agent.SetDestination(transform.position);
+                Invoke("RotateDelay", 1f);
+            }
         }
     }
 

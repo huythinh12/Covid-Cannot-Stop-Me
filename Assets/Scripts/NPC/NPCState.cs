@@ -39,6 +39,8 @@ public class NPCState : MonoBehaviour
             transform.name = "Ally";
             transform.tag = "Ally";
             transform.parent.parent = null;
+            transform.GetChild(3).gameObject.SetActive(false);
+            GetComponent<CapsuleCollider>().enabled = false;
             GetComponent<FollowTarget>().enabled = true;
             GetComponent<NavMeshAgent>().enabled = true;
             GetComponent<NPCDetectInZone>().enabled = false;

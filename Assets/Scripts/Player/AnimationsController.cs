@@ -68,7 +68,7 @@ namespace Player
                 // CheckJumpAnimtion();
                 CheckMoveToAnimation(isMove);
                 CheckAttackAnimation();
-                CheckHealingAnimation();
+                //CheckHealingAnimation();
                 // CheckCoughAnimation(isMove);
             }
          

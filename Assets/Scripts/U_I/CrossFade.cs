@@ -21,10 +21,12 @@ public class CrossFade : MonoBehaviour
     {
         if (isFadeIn)
         {
-           StartCoroutine(FadeIn());
+            GetComponent<Image>().raycastTarget = false;
+            StartCoroutine(FadeIn());
         }
         else
         {
+            GetComponent<Image>().raycastTarget = true;
             FadeOut();
         }
     }
@@ -35,7 +37,6 @@ public class CrossFade : MonoBehaviour
             .SetUpdate(true);
         yield return new WaitForSeconds(1);
         SceneLoadingManager.hasLoadingDone = true;
-
     }
 
     public void FadeOut()
