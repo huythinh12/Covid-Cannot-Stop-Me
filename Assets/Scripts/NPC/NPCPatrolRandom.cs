@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -22,7 +18,8 @@ public class NPCPatrolRandom : MonoBehaviour
 
     private void Awake()
     {
-        // movePoints = GameObject.FindGameObjectsWithTag(tagNameToMove).ToList();
+        // var tagNameToMove = "Move Point";
+        // movePoints = GameObject.FindGameObjectsWithTag(tagNameToMove).ToList(); //for test
     }
 
     // Start is called before the first frame update

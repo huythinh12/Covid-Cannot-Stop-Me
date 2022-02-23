@@ -19,7 +19,7 @@ public class Mission1Controller : MonoBehaviour
                 GameManager.Instance.isEndTime = true;
                 GameManager.Instance.isFail = true;
             }
-            else if (GameManager.Instance.isEndTime && GameManager.Instance.listInfected.Count > 5)
+            else if (GameManager.Instance.isEndTime && GameManager.Instance.listInfected.Count > 5 || GameManager.Instance.listInfected.Count > 5)
             {
                 GameManager.Instance.isFail = true;
                 GameManager.Instance.isEndTime = true;
